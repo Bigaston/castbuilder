@@ -1,0 +1,25 @@
+{
+  "name": "webcast",
+  "version": "1.0.0",
+  "description": "A little Podcast website and RSS generator in NodeJS",
+  "main": "webcast.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Bigaston/webcast.git"
+  },
+  "author": "Bigaston",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Bigaston/webcast/issues"
+  },
+  "homepage": "https://github.com/Bigaston/webcast#readme",
+  "bin": {
+    "webcast": "./cli/cli.js"
+  },
+  "dependencies": {
+    "chalk": "^2.4.2"
+  }
+}
