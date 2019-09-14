@@ -4,7 +4,6 @@ const chalk = require("chalk");
 const readline = require('readline');
 const rss = require("rss");
 const showdown  = require('showdown');
-const url = require("url");
 const mustache = require("mustache")
 
 const error = chalk.bold.red;
@@ -128,9 +127,9 @@ module.exports = (args) => {
 			title: information.title,
 			description: new showdown.Converter().makeHtml(information.description),
 			generator: "Webcast",
-			feed_url: url.resolve(information.link, "/feed.xml"),
+			feed_url: information.link + "/feed.xml",
 			site_url: information.link,
-			image_url: url.resolve(information.link, "img/" + information.image),
+			image_url: information.link + "/img/" + information.image,
 			copyright: information.copyright,
 			language: information.language,
 			custom_namespaces: {
@@ -155,7 +154,7 @@ module.exports = (args) => {
 				{"itunes:type" : "episodic"},
 				{"itunes:image": [
 					{_attr: {
-						href: url.resolve(information.link, "img/" + information.image)
+						href: information.link + "/img/" + information.image
 					}}
 				]},
 				{"itunes:explicit" : information.explicit}
