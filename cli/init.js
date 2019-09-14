@@ -5,6 +5,7 @@ const chalk = require("chalk");
 const error = chalk.bold.red;
 const warning = chalk.yellow;
 const good = chalk.green;
+const info = chalk.bold.blue;
 
 var folder = ["img", "episode"]
 var files = [
@@ -20,7 +21,7 @@ var files = [
 
 module.exports = (args) => {
 	main_dir = process.cwd();
-	console.log(chalk.bold.blue("Initialisation du projet\nCréation des dossiers"))
+	console.log(info("Initialisation du projet\nCréation des dossiers"))
 
 	folder.forEach((f) => {
 		try {
@@ -35,7 +36,7 @@ module.exports = (args) => {
 		}
 	})
 
-	console.log(chalk.bold.blue("\nCopie des fichiers d'exemples"));
+	console.log(info("\nCopie des fichiers d'exemples"));
 
 	files.forEach((f) => {
 		try {
@@ -49,6 +50,8 @@ module.exports = (args) => {
 			}
 		}
 	})
+
+	console.log(info("Création des fichiers de base terminée!"))
 }
 
 /*

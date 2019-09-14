@@ -2,6 +2,7 @@
 
 const package = require("../package.json")
 const init = require("./init.js")
+const render = require("./render.js")
 
 const [,, ...args] = process.argv
 
@@ -13,5 +14,9 @@ Commands are:
 	switch(args[0]) {
 		case "init":
 			init(args);
+			break;
+		case "render":
+			render(args);
+			break;
 	}
 }
