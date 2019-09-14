@@ -96,6 +96,9 @@ module.exports = (args) => {
 		
 			ep.on("close", (line) => {
 				information.items[i].description = desc_ep + "";
+				information.items.sort((a,b) => {
+					return -(a.pubDate-b.pubDate);
+				});
 				console.log(good(`Fichier "${f}" importé!`))
 				nb_file_read++;
 			})
@@ -170,7 +173,6 @@ module.exports = (args) => {
 				guid: item.guid,
 				author: item.author,
 				date: new Date(parseInt(item.pubDate)),
-				enclosure: item.audio,
 				custom_elements: [
 					{'itunes:author': item.author},
 					{'itunes:subtitle': item.description},
@@ -180,7 +182,13 @@ module.exports = (args) => {
 					  }
 					}},
 					{'itunes:duration': item.duration},
-					{"itunes:episodeType": "full"}
+					{"itunes:episodeType": "full"},
+					{"enclosure" : {
+						_attr: {
+							url: item.audio,
+							type: "audio/mpeg"
+						}
+					}}
 				  ]
 			})
 		})
