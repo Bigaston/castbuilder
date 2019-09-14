@@ -167,7 +167,6 @@ module.exports = (args) => {
 
 		information.items.forEach((item) => {
 			//url.resolve(information.link, "ep/" + item.guid + ".html")
-			console.log(item)
 			feed.item({
 				title: item.title,
 				description: new showdown.Converter().makeHtml(item.description),
