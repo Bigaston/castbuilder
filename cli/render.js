@@ -228,7 +228,7 @@ module.exports = (args) => {
 		var render_object = {
 			"podcast_title": information.title,
 			"podcast_author": information.author,
-			"image_link": url.resolve("img/", information.image),
+			"image_link": "img/" + information.image,
 			"podcast_description": new showdown.Converter().makeHtml(information.description),
 			"podcast_copyright": information.copyright,
 			"episodes": []
@@ -236,7 +236,7 @@ module.exports = (args) => {
 
 		information.items.forEach((ep) => {
 			render_object.episodes.push({
-				"ep_image": url.resolve("img/", ep.image),
+				"ep_image": "img/" + ep.image,
 				"ep_title": ep.title,
 				"ep_desc": new showdown.Converter().makeHtml(ep.description)
 			})
