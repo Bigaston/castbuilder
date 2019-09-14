@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "chalk": "^2.4.2",
+    "mustache": "^3.1.0",
     "rss": "^1.2.2",
     "showdown": "^1.9.0"
   }

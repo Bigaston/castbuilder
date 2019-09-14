@@ -5,5 +5,6 @@ pubDate: Date de publication
 duration: 5:12
 image: lien vers l'image (facultatif)
 keyword:
+url:
 ------
 Ceci est un exemple de description

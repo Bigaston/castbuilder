@@ -5,6 +5,7 @@ const readline = require('readline');
 const rss = require("rss");
 const showdown  = require('showdown');
 const url = require("url");
+const mustache = require("mustache")
 
 const error = chalk.bold.red;
 const warning = chalk.yellow;
@@ -12,7 +13,7 @@ const good = chalk.green;
 const inf = chalk.blue.bold;
 
 const valid_info_tag = ["title", "author", "email", "category", "subcategory", "copyright", "type", "image", "link", "keyword", "language", "explicit"];
-const valid_ep_tag = ["title", "author", "audio", "pubDate", "duration", "image", "keyword"];
+const valid_ep_tag = ["title", "author", "audio", "pubDate", "duration", "image", "keyword", "url"];
 
 var information = {
 	"items": []
@@ -68,7 +69,7 @@ module.exports = (args) => {
 
 			information.items[i] = {};
 
-			information.items[i].url = f.replace(".md", "");
+			information.items[i].guid = f.replace(".md", "");
 		
 			let ep = readline.createInterface({
 				input: fs.createReadStream(path.join(main_dir, "episode", f))
@@ -105,12 +106,12 @@ module.exports = (args) => {
 			if (nb_file_read >= files.length) {
 				console.log(good("\nTous les fichiers ont été importés!"))
 				clearInterval(check);
-				renderXML();
+				renderFiles();
 			}
 		}
 	}
 
-	function renderXML() {
+	function renderFiles() {
 		try {
 			fs.mkdirSync(path.join(main_dir, "output"));
 			console.log(good(`Dossier de sortie créé`))
@@ -162,11 +163,12 @@ module.exports = (args) => {
 		})
 
 		information.items.forEach((item) => {
+			//url.resolve(information.link, "ep/" + item.guid + ".html")
 			feed.item({
 				title: item.title,
 				description: new showdown.Converter().makeHtml(item.description),
-				url: url.resolve(information.link, "ep/" + item.url + ".html"),
-				guid: item.url,
+				url: item.url,
+				guid: item.guid,
 				author: item.author,
 				date: new Date(parseInt(item.pubDate)),
 				enclosure: item.audio,
@@ -186,6 +188,64 @@ module.exports = (args) => {
 
 
 		fs.writeFileSync(path.join(main_dir, "output", "feed.xml"), feed.xml({indent: true}));
+		console.log(good("FLux RSS généré"));
+
+		console.log(inf("\nCopie des images"));
+		try {
+			fs.mkdirSync(path.join(main_dir, "output", "img"));
+			console.log(good(`Dossier des images créé`))
+		} catch(err) {
+			if (err.code == 'EEXIST') {
+				console.log(warning(`Le dossier "img" existe déjà`));
+			} else {
+				console.log(error(`Erreur inconue lors de la création de "img" :\n${err.Error}`))
+			}
+		}
+
+		var img = fs.readdirSync(path.join(main_dir, "img"));
+
+		img.forEach((i) => {
+			fs.copyFileSync(path.join(main_dir, "img", i), path.join(main_dir, "output", "img", i))
+			console.log(good(`Copie de "${i}" effectuée`))
+		})
+
+		console.log(good("Toutes les images ont été copiés!"))
+
+		console.log(inf("\nGénération des fichiers HTML"));
+
+		try {
+			fs.copyFileSync(path.join(__dirname, "basic_file", "style.css"), path.join(main_dir, "output", "style.css"), fs.constants.COPYFILE_EXCL)
+			console.log(good(`Le fichier "style.css" à bien été copié!`))
+		} catch(err) {
+			if (err.code == "EEXIST") {
+				console.log(warning(`Le fichier "style.css" existe déjà, il ne sera pas remplacé`))
+			} else {
+				console.log(error(`Erreur inconue lors de la copie de "style.css" :\n${err.Error}`))
+			}
+		}
+
+		var index_template = fs.readFileSync(path.join(__dirname, "basic_file", "index.mustache"), "utf8");
+
+		var render_object = {
+			"podcast_title": information.title,
+			"podcast_author": information.author,
+			"image_link": url.resolve("img/", information.image),
+			"podcast_description": new showdown.Converter().makeHtml(information.description),
+			"podcast_copyright": information.copyright,
+			"episodes": []
+		}
+
+		information.items.forEach((ep) => {
+			render_object.episodes.push({
+				"ep_image": url.resolve("img/", ep.image),
+				"ep_title": ep.title,
+				"ep_desc": new showdown.Converter().makeHtml(ep.description)
+			})
+		})
+
+		var index_html = mustache.render(index_template, render_object)
+
+		fs.writeFileSync(path.join(main_dir, "output", "index.html"), index_html);
 	}
 }
 

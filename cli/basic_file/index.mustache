@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="fr" >
+
+<head>
+	<meta charset="UTF-8">
+	<title>Pijapp - Like</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+
+    <body>
+        <center>
+            <header>
+                <h1>{{ podcast_title }}</h1>
+				<img id="podlogo" src="{{{ image_link }}}" alt="Logo de {{ podcast_title }}">
+				<div>{{{ podcast_description }}}</div>
+            </header>
+
+			<section>
+				{{#episodes}}
+					<article class="podcast">
+						<div class="leftDiv">
+							<img src="{{ ep_image }}" alt="{{ ep_title }}">
+						</div>
+						<div class="rightDiv">
+							<h2>{{ ep_title }}</h2>
+							<div class="description">
+								{{{ ep_desc }}}
+							</div>
+						</div>
+					</article>
+				{{/episodes}}
+			</section>
+
+			<footer>
+				<p>{{ podcast_title}} par {{ podcast_author }}</p>
+				<p>© {{ podcast_copyright }}</p>
+			</footer>
+        </center>
+    </body>
+</html>
