@@ -176,7 +176,7 @@ module.exports = (args) => {
 					{'itunes:subtitle': item.description},
 					{'itunes:image': {
 					  _attr: {
-						href: url.resolve(information.link, "img/" + information.image)
+						href: information.link + "/img/" + information.image
 					  }
 					}},
 					{'itunes:duration': item.duration},
