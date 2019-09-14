@@ -96,9 +96,6 @@ module.exports = (args) => {
 		
 			ep.on("close", (line) => {
 				information.items[i].description = desc_ep + "";
-				information.items.sort((a,b) => {
-					return -(a.pubDate-b.pubDate);
-				});
 				console.log(good(`Fichier "${f}" importé!`))
 				nb_file_read++;
 			})
@@ -124,6 +121,10 @@ module.exports = (args) => {
 				console.log(error(`Erreur inconue lors de la création de "output" :\n${err.Error}`))
 			}
 		}
+
+		information.items.sort((a,b) => {
+			return -(a.pubDate-b.pubDate);
+		});
 		
 		console.log(inf("Création du flux RSS"));
 		var feed = new rss({
@@ -166,6 +167,7 @@ module.exports = (args) => {
 
 		information.items.forEach((item) => {
 			//url.resolve(information.link, "ep/" + item.guid + ".html")
+			console.log(item)
 			feed.item({
 				title: item.title,
 				description: new showdown.Converter().makeHtml(item.description),
@@ -239,6 +241,7 @@ module.exports = (args) => {
 			"image_link": "img/" + information.image,
 			"podcast_description": new showdown.Converter().makeHtml(information.description),
 			"podcast_copyright": information.copyright,
+			"feed_link": information.link + "/feed.xml",
 			"episodes": []
 		}
 

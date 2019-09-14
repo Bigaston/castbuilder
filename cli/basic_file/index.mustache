@@ -3,7 +3,7 @@
 
 <head>
 	<meta charset="UTF-8">
-	<title>Pijapp - Like</title>
+	<title>{{ podcast_title }}</title>
     <link rel="stylesheet" href="./style.css">
 </head>
 
@@ -11,6 +11,7 @@
         <center>
             <header>
                 <h1>{{ podcast_title }}</h1>
+				<a id="feedlink" href="{{ feed_link }}"><i class="fas fa-rss-square"></i> Accéder au flux</a><br/>
 				<img id="podlogo" src="{{{ image_link }}}" alt="Logo de {{ podcast_title }}">
 				<div>{{{ podcast_description }}}</div>
             </header>
