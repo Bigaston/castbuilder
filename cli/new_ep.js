@@ -1,0 +1,159 @@
+const fs = require("fs");
+const path = require("path");
+const chalk = require("chalk");
+const readline = require('readline');
+
+const error = chalk.bold.red;
+const warning = chalk.yellow;
+const good = chalk.green;
+const info = chalk.bold.blue;
+
+main_dir = process.cwd();
+
+parametres = {
+	"title": "",
+	"author": "",
+	"audio": "",
+	"pubDate": "",
+	"duration": "",
+	"image": "",
+	"keyword": "",
+	"url": ""
+}
+
+module.exports = (easy_mod) => {
+	if (easy_mod != undefined) {
+		console.log(info("Mode facile activé! Merci de répondre aux questions suivantes!"))
+
+		const rl = readline.createInterface({
+			input: process.stdin,
+			output: process.stdout
+		});
+
+		rl.question(info("Quel est le nom de votre épisode?\n> "), (answer) => {
+			parametres.title = answer;
+
+			rl.question(info("\nQuel est l'auteur de l'épisode? (laissez vide pour le même que le podcast)\n> "), (answer) => {
+				getAuthorInformation(answer, () => {
+					rl.question(info("\nQuel est le lien du fichier MP3 de l'épisode?\n> "), (answer) => {
+						parametres.audio = answer
+					
+						rl.question(info("\nQuel est la date de publication? (Timestamp Javascript. Laisser blanc pour maintenant)\n> "), (answer) => {
+							if (answer == "") {
+								parametres.pubDate = Date.now();
+							} else {
+								parametres.pubDate = answer
+							}
+		
+							rl.question(info("\nQuel est la durée de votre épisode? (Format HH:MM:SS ou MM:SS)\n> "), (answer) => {
+								parametres.duration = answer;
+
+								rl.question(info("\nQuel est le nom de l'image de l'épisode? (Présente dans le dossier img/. Laissez vide pour la même que l'épisode)\n> "), (answer) => {
+									getImageInformation(answer, () => {
+										rl.question(info("\nQuels sont les tags de votre épisode? (Séparés par une virgule)\n> "), (answer) => {
+											parametres.keyword = answer
+
+											rl.question(info("\nQuelle est l'URL associée à votre épisode?\n> "), (answer) => {
+												parametres.url = answer;
+
+												rl.question(info("\nQuel est l'id unique de votre épisode (utilisé dans le GUID)\n> "), (answer) => {
+													rl.close();
+
+													generationFichier(answer);
+												})
+											})
+										})
+									})
+								})
+							})
+						})
+					})
+				});				
+			})
+		});
+	} else {
+		generationFichier("new_episode")
+	}
+}
+
+function getAuthorInformation(answer, _callback) {
+	if (answer == "") {
+		parametres.author = "";
+
+		let info = readline.createInterface({
+			input: fs.createReadStream(path.join(main_dir, "information.md"))
+		})
+		
+		info.on("line", (line) => {
+			let cut = line.split(" ");
+						
+			if(cut[0].replace(":", "") == "author") {
+				parametres.author = cut.slice(1).join(" ");
+			}
+		})
+		
+		info.on("close", (line) => {
+			if (parametres.author == "") {
+				console.log(error("Le nom de l'auteur est vide!"))
+				parametres.author = "";
+			} else {
+				console.log(good("Auteur importé : " + parametres.author))
+			}
+
+			_callback();
+		})
+	} else {
+		parametres.author = answer
+		_callback();
+	}
+}
+
+function getImageInformation(answer, _callback) {
+	if (answer == "") {
+		parametres.image = "";
+
+		let info = readline.createInterface({
+			input: fs.createReadStream(path.join(main_dir, "information.md"))
+		})
+		
+		info.on("line", (line) => {
+			let cut = line.split(" ");
+						
+			if(cut[0].replace(":", "") == "image") {
+				parametres.image = cut.slice(1).join(" ");
+			}
+		})
+		
+		info.on("close", (line) => {
+			if (parametres.image == "") {
+				console.log(error("L'image est vide!"))
+				parametres.image = "";
+			} else {
+				console.log(good("Image importée : " + parametres.image))
+			}
+
+			_callback();
+		})
+	} else {
+		parametres.image = answer
+		_callback();
+	}
+}
+
+function generationFichier(guid) {
+	chaine_fichier = "";
+
+	key = Object.keys(parametres);
+
+	key.forEach((cle) => {
+		chaine_fichier = chaine_fichier + cle + ": " + parametres[cle] + "\n"
+	})
+
+	chaine_fichier = chaine_fichier + "------\n";
+	try {
+		fs.writeFileSync(path.join(main_dir, "episode", guid + ".md"), chaine_fichier)
+		console.log(good("Episode généré et disponible dans le dossier episode/ sous le nom " + guid + ".md !"))
+	} catch (err) {
+		console.log(err)
+	}
+}

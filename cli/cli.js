@@ -3,20 +3,43 @@
 const package = require("../package.json")
 const init = require("./init.js")
 const render = require("./render.js")
+const new_ep = require("./new_ep.js")
+const chalk = require("chalk");
+const command = require('commander');
 
 const [,, ...args] = process.argv
 
+command
+	.version(package.version)
+	.name("castbuilder")
+	.option("-e, --easy", "Active le mode facile")
+
+command
+	.command("init")
+	.description("Crée l'arborescence basique des fichiers")
+	.action((cmd, env) => {
+		init();
+	})
+
+command
+	.command("render")
+	.description("Crée le site web et le flux RSS à partir des fichiers présents")
+	.action((cmd, env) => {
+		render();
+	})
+
+command
+	.command("new")
+	.description("Crée un nouvel épisode")
+	.action((cmd, env) => {
+		new_ep(command.easy);
+	})
+
+
+command.parse(process.argv)
+
 if (args.length == 0) {
-	console.log(`=== Welcome to Webcast (Version : ${package.version}) ===
-Commands are:
-- init : Create the basic organisation of your website`)
-} else {
-	switch(args[0]) {
-		case "init":
-			init(args);
-			break;
-		case "render":
-			render(args);
-			break;
-	}
+	command.outputHelp((txt) => {
+		return chalk.blue(txt)
+	})
 }

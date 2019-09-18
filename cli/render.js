@@ -18,7 +18,7 @@ var information = {
 	"items": []
 };
 
-module.exports = (args) => {
+module.exports = () => {
 	main_dir = process.cwd();
 	console.log(inf(`Démarage de la création du site.`))
 
@@ -240,7 +240,6 @@ module.exports = (args) => {
 			"image_link": "img/" + information.image,
 			"podcast_description": new showdown.Converter().makeHtml(information.description),
 			"podcast_copyright": information.copyright,
-			"feed_link": information.link + "/feed.xml",
 			"episodes": []
 		}
 

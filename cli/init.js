@@ -19,7 +19,7 @@ var files = [
 	}
 ]
 
-module.exports = (args) => {
+module.exports = () => {
 	main_dir = process.cwd();
 	console.log(info("Initialisation du projet\nCréation des dossiers"))
 
