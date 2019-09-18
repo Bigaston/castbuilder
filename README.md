@@ -7,6 +7,7 @@
 Un générateur de site statique pour le podcast. Une fois installé utilisez
 - `castbuilder init` depuis votre dossier pour initialiser l'arborescence
 - `castbuilder render` pour générer votre site
+- `castbuilder new` pour créer un nouvel épisode. Utilisez `castbuilder new -e` pour avoir une création interractive
 
 ## Informations
 Attention! Ce projet n'est pas fait pour les gros projets de flux RSS. Il est plutôt là pour servir de complément à un flux principal, ou pour quelques épisodes, ou encore si vous avez besoin d'un flux vraiment sur votre site web. Si vous voulez un flux plus résistant, avec une belle interface graphique et hébergé en ligne gratuitement, vous pouvez utiliser [Podcloud](https://podcloud.fr/). Castbuilder est un peut pensé comme son petit frère spirituel, qui est là pour avoir les fonctions de bases.
