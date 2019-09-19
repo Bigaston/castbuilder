@@ -51,8 +51,8 @@ Sous cette ligne, entrez la description de votre podcast!
 
 Vous pouvez faire de la mise en page en **gras par exemple** mais prenez en compte que tous les lecteurs ne le supporteront pas!
 ```
-Liste des catégories iTunes : https://castos.com/itunes-podcast-category-list/  
-Les langages supportés dans les flux RSS : http://www.rssboard.org/rss-language-codes
+Liste des catégories iTunes : [castos.com/itunes-podcast-category-list](https://castos.com/itunes-podcast-category-list/)  
+Les langages supportés dans les flux RSS : [rssboard.org/rss-language-codes](http://www.rssboard.org/rss-language-codes)
 
 Maintenant qu'on a vu le fichier information.md on va voir un peu comment créer un épisode! Il suffit de créer un fichier .md dans le dossier `episode/`. Le nom du fichier sera le GUID de votre épisode et son adresse quand la génération d'article pour l'épisode sera en place.
 
