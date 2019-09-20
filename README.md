@@ -3,6 +3,7 @@
 [![NPM Version](http://img.shields.io/npm/v/castbuilder.svg?style=flat)](https://www.npmjs.org/package/castbuilder)
 [![NPM Downloads](https://img.shields.io/npm/dm/castbuilder.svg?style=flat)](https://npmcharts.com/compare/castbuilder?minimal=true)
 [![Install Size](https://packagephobia.now.sh/badge?p=castbuilder)](https://packagephobia.now.sh/result?p=castbuilder)
+![Licence](https://img.shields.io/npm/l/castbuilder)
 
 Un générateur de site statique pour le podcast. Une fois installé utilisez
 - `castbuilder init` depuis votre dossier pour initialiser l'arborescence
@@ -51,8 +52,8 @@ Sous cette ligne, entrez la description de votre podcast!
 
 Vous pouvez faire de la mise en page en **gras par exemple** mais prenez en compte que tous les lecteurs ne le supporteront pas!
 ```
-Liste des catégories iTunes : https://castos.com/itunes-podcast-category-list/  
-Les langages supportés dans les flux RSS : http://www.rssboard.org/rss-language-codes
+Liste des catégories iTunes : [castos.com/itunes-podcast-category-list](https://castos.com/itunes-podcast-category-list/)  
+Les langages supportés dans les flux RSS : [rssboard.org/rss-language-codes](http://www.rssboard.org/rss-language-codes)
 
 Maintenant qu'on a vu le fichier information.md on va voir un peu comment créer un épisode! Il suffit de créer un fichier .md dans le dossier `episode/`. Le nom du fichier sera le GUID de votre épisode et son adresse quand la génération d'article pour l'épisode sera en place.
 
