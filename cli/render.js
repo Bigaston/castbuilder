@@ -130,14 +130,15 @@ module.exports = () => {
 		var feed = new rss({
 			title: information.title,
 			description: new showdown.Converter().makeHtml(information.description),
-			generator: "Webcast",
+			generator: "Castbuilder",
 			feed_url: information.link + "/feed.xml",
 			site_url: information.link,
 			image_url: information.link + "/img/" + information.image,
 			copyright: information.copyright,
 			language: information.language,
 			custom_namespaces: {
-				'itunes': 'http://www.itunes.com/dtds/podcast-1.0.dtd'
+				'itunes': 'http://www.itunes.com/dtds/podcast-1.0.dtd',
+				"google": "http://www.google.com/schemas/play-podcasts/1.0"
 			},
 			custom_elements: [
 				{"itunes:author" : information.author},
