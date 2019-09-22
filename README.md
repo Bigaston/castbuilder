@@ -67,6 +67,9 @@ duration: La durée de votre épisode (au format hh:mm:ss ou mm:ss)
 image: lien vers l'image, encore une fois présente dans le dossier img/
 keyword: les tags de votre épisode sur iTunes
 url: L'URL de l'article associé à votre épisode (dans le futur possibilitée qu'il soit généré automatiquement
+episode: Numéro de l'épisode (0 si il n'y en a pas) [OPTIONNEL]
+season: Numéro de la saison (0 si il n'y en a pas) [OPTIONNEL]
+episodeType: Type de l'épisode (full, trailer, bonus) [OPTIONNEL]
 ------
 Encore une fois une description *en Markdown*
 ```

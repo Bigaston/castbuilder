@@ -60,14 +60,25 @@ module.exports = (easy_mod) => {
 									getImageInformation(answer, () => {
 										rl.question(info("\nQuels sont les tags de votre épisode? (Séparés par une virgule)\n> "), (answer) => {
 											parametres.keyword = answer
+											rl.question(info("\nQuel est votre numéro de saison? (0 ou vide si il n'y en a pas)\n> "), (answer) => {
+												parametres.season = answer
 
-											rl.question(info("\nQuelle est l'URL associée à votre épisode?\n> "), (answer) => {
-												parametres.url = answer;
+												rl.question(info("\nQuel est votre numéro d'épisode (0 ou vide si il n'y en a pas)\n> "), (answer) => {
+													parametres.episode = answer
 
-												rl.question(info("\nQuel est l'id unique de votre épisode (utilisé dans le GUID)\n> "), (answer) => {
-													rl.close();
+													rl.question(info("\nQuelle est l'URL associée à votre épisode?\n> "), (answer) => {
+														parametres.url = answer;
 
-													generationFichier(answer);
+														rl.question(info("\nQuel est le type de l'épisode? (full, trailer, bonus)\n> "), (answer) => {
+															parametres.episodeType = answer;
+
+															rl.question(info("\nQuel est l'id unique de votre épisode (utilisé dans le GUID)\n> "), (answer) => {
+																rl.close();
+			
+																generationFichier(answer);
+															})
+														})
+													})
 												})
 											})
 										})
