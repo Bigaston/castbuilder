@@ -41,7 +41,6 @@ footer > p {
 .podcast {
  display: flex;
  padding: 10px;
- max-height: 124px;
  transition-property: max-height;
  border-bottom: solid 1px #ABB2B9;
  transition-duration: 0.5s;
@@ -52,13 +51,13 @@ footer > p {
     border-bottom: none;
 }
 
-.podcast:hover {
-    max-height: 700px;
-}
-
 .leftDiv {
     display: flex;
     flex-direction: column;
+}
+
+.leftDiv > p {
+    margin: 0px;
 }
 
 .leftDiv > img {

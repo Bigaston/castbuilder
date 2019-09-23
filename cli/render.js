@@ -194,8 +194,8 @@ module.exports = () => {
 			})
 		})
 
-
-		fs.writeFileSync(path.join(main_dir, "output", "feed.xml"), feed.xml({indent: true}));
+		xml_sortie = feed.xml({indent:true}) //.replace(`<?xml version="1.0" encoding="UTF-8"?>`, `<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type="text/xsl" href="feed_style.xsl" ?>`)
+		fs.writeFileSync(path.join(main_dir, "output", "feed.xml"), xml_sortie);
 		console.log(good("FLux RSS généré"));
 
 		console.log(inf("\nCopie des images"));
@@ -232,6 +232,17 @@ module.exports = () => {
 			}
 		}
 
+		try {
+			fs.copyFileSync(path.join(__dirname, "basic_file", "feed_style.xsl"), path.join(main_dir, "output", "feed_style.xsl"), fs.constants.COPYFILE_EXCL)
+			console.log(good(`Le fichier "feed_style.xsl" à bien été copié!`))
+		} catch(err) {
+			if (err.code == "EEXIST") {
+				console.log(warning(`Le fichier "feed_style.xsl" existe déjà, il ne sera pas remplacé`))
+			} else {
+				console.log(error(`Erreur inconue lors de la copie de "feed_style.xsl" :\n${err.Error}`))
+			}
+		}
+
 		var index_template = fs.readFileSync(path.join(__dirname, "basic_file", "index.mustache"), "utf8");
 
 		var render_object = {
@@ -244,10 +255,13 @@ module.exports = () => {
 		}
 
 		information.items.forEach((ep) => {
+			pub_date = new Date(parseInt(ep.pubDate))
 			render_object.episodes.push({
 				"ep_image": "img/" + ep.image,
 				"ep_title": ep.title,
-				"ep_desc": new showdown.Converter().makeHtml(ep.description)
+				"ep_desc": new showdown.Converter().makeHtml(ep.description),
+				"duree_ep": ep.duration,
+				"date_sortie": pub_date.getDate() + "/" + (pub_date.getMonth()+1) + "/" + pub_date.getFullYear() + " " + (pub_date.getHours()-2) + ":" + pub_date.getMinutes()
 			})
 		})
 
