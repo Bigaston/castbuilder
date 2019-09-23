@@ -38,12 +38,20 @@ module.exports = (easy_mod) => {
 					rl.question(info("\nQuel est le lien du fichier MP3 de l'épisode?\n> "), (answer) => {
 						parametres.audio = answer
 					
-						rl.question(info("\nQuel est la date de publication? (Timestamp Javascript. Laisser blanc pour maintenant)\n> "), (answer) => {
+						rl.question(info("\nQuel est la date de publication? (Format JJ/MM/AAAA HH:MM. Laisser blanc pour maintenant)\n> "), (answer) => {
 							if (answer == "") {
 								parametres.pubDate = Date.now();
 							} else {
-								parametres.pubDate = answer
+								date_heure = answer.split(" ")
+								date_split = date_heure[0].split("/")
+								heure_split = date_heure[1].split(":")
+								create_date = new Date(date_split[2], date_split[1]-1, date_split[0], heure_split[0], heure_split[1])
+
+
+								parametres.pubDate = create_date.getTime();
 							}
+
+							console.log(good("Date entrée : " + (new Date(parametres.pubDate)).toString()));
 		
 							rl.question(info("\nQuel est la durée de votre épisode? (Format HH:MM:SS ou MM:SS)\n> "), (answer) => {
 								parametres.duration = answer;
@@ -52,14 +60,25 @@ module.exports = (easy_mod) => {
 									getImageInformation(answer, () => {
 										rl.question(info("\nQuels sont les tags de votre épisode? (Séparés par une virgule)\n> "), (answer) => {
 											parametres.keyword = answer
+											rl.question(info("\nQuel est votre numéro de saison? (0 ou vide si il n'y en a pas)\n> "), (answer) => {
+												parametres.season = answer
 
-											rl.question(info("\nQuelle est l'URL associée à votre épisode?\n> "), (answer) => {
-												parametres.url = answer;
+												rl.question(info("\nQuel est votre numéro d'épisode (0 ou vide si il n'y en a pas)\n> "), (answer) => {
+													parametres.episode = answer
 
-												rl.question(info("\nQuel est l'id unique de votre épisode (utilisé dans le GUID)\n> "), (answer) => {
-													rl.close();
+													rl.question(info("\nQuelle est l'URL associée à votre épisode?\n> "), (answer) => {
+														parametres.url = answer;
 
-													generationFichier(answer);
+														rl.question(info("\nQuel est le type de l'épisode? (full, trailer, bonus)\n> "), (answer) => {
+															parametres.episodeType = answer;
+
+															rl.question(info("\nQuel est l'id unique de votre épisode (utilisé dans le GUID)\n> "), (answer) => {
+																rl.close();
+			
+																generationFichier(answer);
+															})
+														})
+													})
 												})
 											})
 										})

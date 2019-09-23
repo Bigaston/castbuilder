@@ -6,5 +6,8 @@ duration: 5:12
 image: lien vers l'image
 keyword:
 url:
+episode:
+season:
+episodeType:
 ------
 Ceci est un exemple de description

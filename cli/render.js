@@ -12,7 +12,7 @@ const good = chalk.green;
 const inf = chalk.blue.bold;
 
 const valid_info_tag = ["title", "author", "email", "category", "subcategory", "copyright", "type", "image", "link", "keyword", "language", "explicit"];
-const valid_ep_tag = ["title", "author", "audio", "pubDate", "duration", "image", "keyword", "url"];
+const valid_ep_tag = ["title", "author", "audio", "pubDate", "duration", "image", "keyword", "url", "season", "episode", "episodeType"];
 
 var information = {
 	"items": []
@@ -130,14 +130,15 @@ module.exports = () => {
 		var feed = new rss({
 			title: information.title,
 			description: new showdown.Converter().makeHtml(information.description),
-			generator: "Webcast",
+			generator: "Castbuilder",
 			feed_url: information.link + "/feed.xml",
 			site_url: information.link,
 			image_url: information.link + "/img/" + information.image,
 			copyright: information.copyright,
 			language: information.language,
 			custom_namespaces: {
-				'itunes': 'http://www.itunes.com/dtds/podcast-1.0.dtd'
+				'itunes': 'http://www.itunes.com/dtds/podcast-1.0.dtd',
+				"google": "http://www.google.com/schemas/play-podcasts/1.0"
 			},
 			custom_elements: [
 				{"itunes:author" : information.author},
@@ -167,7 +168,8 @@ module.exports = () => {
 
 		information.items.forEach((item) => {
 			//url.resolve(information.link, "ep/" + item.guid + ".html")
-			feed.item({
+
+			ep_info = {
 				title: item.title,
 				description: new showdown.Converter().makeHtml(item.description),
 				url: item.url,
@@ -190,8 +192,22 @@ module.exports = () => {
 							type: "audio/mpeg"
 						}
 					}}
-				  ]
-			})
+				]
+			}
+
+			if (item.episode != "") {
+				ep_info.custom_elements.push({"itunes:episode": item.episode})
+			}
+
+			if (item.season != "") {
+				ep_info.custom_elements.push({"itunes:season" : item.season})
+			}
+
+			if (item.episodeType != "") {
+				ep_info.custom_elements.push({"itunes:episodeType" : item.episodeType})
+			}
+
+			feed.item(ep_info)
 		})
 
 		xml_sortie = feed.xml({indent:true}) //.replace(`<?xml version="1.0" encoding="UTF-8"?>`, `<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type="text/xsl" href="feed_style.xsl" ?>`)
