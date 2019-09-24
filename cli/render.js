@@ -210,7 +210,7 @@ module.exports = () => {
 			feed.item(ep_info)
 		})
 
-		xml_sortie = feed.xml({indent:true}) //.replace(`<?xml version="1.0" encoding="UTF-8"?>`, `<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type="text/xsl" href="feed_style.xsl" ?>`)
+		xml_sortie = feed.xml({indent:true}).replace(`<?xml version="1.0" encoding="UTF-8"?>`, `<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type="text/xsl" href="feed_style.xsl" ?>`)
 		fs.writeFileSync(path.join(main_dir, "output", "feed.xml"), xml_sortie);
 		console.log(good("FLux RSS généré"));
 
