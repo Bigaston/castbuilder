@@ -70,6 +70,10 @@
                         margin: 0px;
                     }
 
+                    .leftDiv > a, .leftDiv > u {
+                        color: black;
+                    }
+
                     .leftDiv > img {
                         height: 100px;
                         min-width: 100px;
@@ -175,6 +179,12 @@
                                     </img>
                                     <p>⏱<xsl:value-of select="itunes:duration" disable-output-escaping="yes"/></p>
                                     <p>📅<xsl:value-of select="pubDate" /></p>
+                                    <a>
+                                        <xsl:attribute name="href">
+                                            <xsl:value-of select="enclosure/@url"/>
+                                        </xsl:attribute>
+                                        <xsl:attribute name="target">_blank</xsl:attribute>
+                                    💾Télécharger</a>
                                 </div>
                                 <div class="rightDiv">
                                     <h2><xsl:value-of select="title"/></h2>

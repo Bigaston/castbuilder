@@ -122,6 +122,17 @@ module.exports = () => {
 			}
 		}
 
+		try {
+			fs.mkdirSync(path.join(main_dir, "output", "ep"));
+			console.log(good(`Dossier "ep" créé`))
+		} catch(err) {
+			if (err.code == 'EEXIST') {
+				console.log(warning(`Le dossier "ep" existe déjà`));
+			} else {
+				console.log(error(`Erreur inconue lors de la création de "ep" :\n${err.Error}`))
+			}
+		}
+
 		information.items.sort((a,b) => {
 			return -(a.pubDate-b.pubDate);
 		});
@@ -249,6 +260,28 @@ module.exports = () => {
 		}
 
 		try {
+			fs.copyFileSync(path.join(__dirname, "basic_file", "ep_style.css"), path.join(main_dir, "output/ep", "ep_style.css"), fs.constants.COPYFILE_EXCL)
+			console.log(good(`Le fichier "ep_style.css" à bien été copié!`))
+		} catch(err) {
+			if (err.code == "EEXIST") {
+				console.log(warning(`Le fichier "ep_style.css" existe déjà, il ne sera pas remplacé`))
+			} else {
+				console.log(error(`Erreur inconue lors de la copie de "ep_style.css" :\n${err.Error}`))
+			}
+		}
+
+		try {
+			fs.copyFileSync(path.join(__dirname, "basic_file", "ep_script.js"), path.join(main_dir, "output/ep", "ep_script.js"), fs.constants.COPYFILE_EXCL)
+			console.log(good(`Le fichier "ep_script.js" à bien été copié!`))
+		} catch(err) {
+			if (err.code == "EEXIST") {
+				console.log(warning(`Le fichier "ep_style.css" existe déjà, il ne sera pas remplacé`))
+			} else {
+				console.log(error(`Erreur inconue lors de la copie de "ep_style.css" :\n${err.Error}`))
+			}
+		}
+
+		try {
 			fs.copyFileSync(path.join(__dirname, "basic_file", "feed_style.xsl"), path.join(main_dir, "output", "feed_style.xsl"), fs.constants.COPYFILE_EXCL)
 			console.log(good(`Le fichier "feed_style.xsl" à bien été copié!`))
 		} catch(err) {
@@ -277,14 +310,48 @@ module.exports = () => {
 				"ep_title": ep.title,
 				"ep_desc": new showdown.Converter().makeHtml(ep.description),
 				"duree_ep": ep.duration,
-				"date_sortie": pub_date.getDate() + "/" + (pub_date.getMonth()+1) + "/" + pub_date.getFullYear() + " " + (pub_date.getHours()-2) + ":" + pub_date.getMinutes()
+				"date_sortie": pub_date.getDate() + "/" + (pub_date.getMonth()+1) + "/" + pub_date.getFullYear() + " " + addZero((pub_date.getHours()-2)) + ":" + addZero(pub_date.getMinutes()),
+				"file_link": ep.audio,
+				"ep_guid": ep.guid
 			})
 		})
 
 		var index_html = mustache.render(index_template, render_object)
 
 		fs.writeFileSync(path.join(main_dir, "output", "index.html"), index_html);
+		console.log(good("Fichier index.html créé"))
+
+		console.log(inf(`\nCréation des fichiers des épisodes dans "ep/"`))
+
+		ep_template = fs.readFileSync(path.join(__dirname, "basic_file", "episode.mustache"), "utf8");
+
+		information.items.forEach((ep) => {
+			pub_date = new Date(parseInt(ep.pubDate))
+			render_object = {
+				"ep_image": "../img/" + ep.image,
+				"ep_title": ep.title,
+				"ep_desc": new showdown.Converter().makeHtml(ep.description),
+				"duree_ep": ep.duration,
+				"podcast_title": information.title,
+				"podcast_author": information.author,
+				"podcast_copyright": information.copyright,
+				"date_sortie": pub_date.getDate() + "/" + (pub_date.getMonth()+1) + "/" + pub_date.getFullYear() + " " + addZero((pub_date.getHours()-2)) + ":" + addZero(pub_date.getMinutes()),
+				"file_link": ep.audio
+			}
+
+			var ep_html = mustache.render(ep_template, render_object)
+			fs.writeFileSync(path.join(main_dir, "output/ep", ep.guid + ".html"), ep_html);
+			console.log(good(`Fichier "${ep.guid}.html" créé`))			
+		})
 	}
+}
+
+function addZero(val) {
+    if (val >= 10) {
+      return "" + val;
+    } else {
+      return "0" + val
+    }
 }
 
 /*

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="fr" >
+
+<head>
+	<meta charset="UTF-8">
+	<title>{{ ep_title }}</title>
+    <link rel="stylesheet" href="./ep_style.css">
+</head>
+
+    <body>
+        <center>
+            <a href="../index.html">Retourner à la liste des épisodes</a>
+            <header>
+                <h1>{{ ep_title }}</h1>
+				<img id="podlogo" src="{{{ ep_image }}}" alt="Logo de {{ ep_title }}">
+                <p>⏱{{duree_ep}} | 📅{{date_sortie}} | <a href="{{file_link}}" target="_blank">💾Télécharger</a></p>
+                </div>
+            </header>
+
+			<section>
+				<audio id="audiosound" src="{{ file_link }}" hidden></audio>
+				<div id="progressbar">
+                    <div id="prog"></div>
+                </div>
+                <div class="time">
+                    <p id="audio-time">00:00:00</p>
+                    <p id="audio-duration">00:00:00</p>
+                </div>
+                <div class="controls">
+                    <i class="timeJump fas fa-backward" sens="-"></i>
+                    <i id="play" class="fas fa-play-circle"></i>
+                    <i class="timeJump fas fa-forward" sens="+"></i>
+                </div>
+			</section>
+
+			<section>
+				<div class="description">
+					{{{ ep_desc }}}
+				</div>
+			</section>
+
+			<footer>
+				<p>{{ podcast_title}} par {{ podcast_author }}</p>
+				<p>© {{ podcast_copyright }}</p>
+			</footer>
+        </center>
+		<script src="./ep_script.js"></script>
+    </body>
+</html>
