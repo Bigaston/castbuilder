@@ -56,7 +56,7 @@ module.exports = (easy_mod) => {
 							rl.question(info("\nQuel est la durée de votre épisode? (Format HH:MM:SS ou MM:SS)\n> "), (answer) => {
 								parametres.duration = answer;
 
-								rl.question(info("\nQuel est le nom de l'image de l'épisode? (Présente dans le dossier img/. Laissez vide pour la même que l'épisode)\n> "), (answer) => {
+								rl.question(info("\nQuel est le nom de l'image de l'épisode? (Présente dans le dossier img/. Laissez vide pour la même que le podcast)\n> "), (answer) => {
 									getImageInformation(answer, () => {
 										rl.question(info("\nQuels sont les tags de votre épisode? (Séparés par une virgule)\n> "), (answer) => {
 											parametres.keyword = answer
