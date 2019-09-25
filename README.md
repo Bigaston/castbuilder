@@ -7,7 +7,7 @@
 
 Un générateur de site statique pour le podcast. Une fois installé utilisez
 - `castbuilder init` depuis votre dossier pour initialiser l'arborescence
-- `castbuilder render` pour générer votre site
+- `castbuilder render` pour générer votre site. Utilisez `castbuilder render -o` pour effacer le dossier *output/* avant le rendu.
 - `castbuilder new` pour créer un nouvel épisode. Utilisez `castbuilder new -e` pour avoir une création interractive
 
 ## Informations
