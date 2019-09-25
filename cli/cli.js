@@ -13,6 +13,7 @@ command
 	.version(package.version)
 	.name("castbuilder")
 	.option("-e, --easy", "Active le mode facile")
+	.option("-o, --override", "Supprime le fichier output/ avant de créer l'arborescence")
 
 command
 	.command("init")
@@ -25,7 +26,7 @@ command
 	.command("render")
 	.description("Crée le site web et le flux RSS à partir des fichiers présents")
 	.action((cmd, env) => {
-		render();
+		render(command.override);
 	})
 
 command

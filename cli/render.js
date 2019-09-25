@@ -18,7 +18,7 @@ var information = {
 	"items": []
 };
 
-module.exports = () => {
+module.exports = (delete_output) => {
 	main_dir = process.cwd();
 	console.log(inf(`Démarage de la création du site.`))
 
@@ -111,6 +111,11 @@ module.exports = () => {
 	}
 
 	function renderFiles() {
+		if (delete_output) {
+			rmdir(path.join(main_dir, "output"));
+			console.log(error("Dossier output/ supprimé"));
+		}
+
 		try {
 			fs.mkdirSync(path.join(main_dir, "output"));
 			console.log(good(`Dossier de sortie créé`))
@@ -351,6 +356,18 @@ function addZero(val) {
       return "" + val;
     } else {
       return "0" + val
+    }
+}
+
+function rmdir(d) {
+    var self = arguments.callee
+    if (fs.existsSync(d)) {
+        fs.readdirSync(d).forEach(function(file) {
+            var C = d + '/' + file
+            if (fs.statSync(C).isDirectory()) self(C)
+            else fs.unlinkSync(C)
+        })
+        fs.rmdirSync(d)
     }
 }
 
