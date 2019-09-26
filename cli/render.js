@@ -5,6 +5,7 @@ const readline = require('readline');
 const rss = require("rss");
 const showdown  = require('showdown');
 const mustache = require("mustache")
+const package = require("../package.json")
 
 const error = chalk.bold.red;
 const warning = chalk.yellow;
@@ -146,7 +147,7 @@ module.exports = (delete_output) => {
 		var feed = new rss({
 			title: information.title,
 			description: new showdown.Converter().makeHtml(information.description),
-			generator: "Castbuilder",
+			generator: "Castbuilder (v" + package.version + ")",
 			feed_url: information.link + "/feed.xml",
 			site_url: information.link,
 			image_url: information.link + "/img/" + information.image,
