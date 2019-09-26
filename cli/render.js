@@ -19,8 +19,9 @@ var information = {
 	"items": []
 };
 
-module.exports = (delete_output) => {
-	main_dir = process.cwd();
+main_dir = process.cwd();
+
+module.exports = (cmd) => {
 	console.log(inf(`Démarage de la création du site.`))
 
 	let is_desc = false;
@@ -112,7 +113,7 @@ module.exports = (delete_output) => {
 	}
 
 	function renderFiles() {
-		if (delete_output) {
+		if (cmd.override) {
 			rmdir(path.join(main_dir, "output"));
 			console.log(error("Dossier output/ supprimé"));
 		}
@@ -255,7 +256,29 @@ module.exports = (delete_output) => {
 		console.log(inf("\nGénération des fichiers HTML"));
 
 		try {
-			fs.copyFileSync(path.join(__dirname, "basic_file", "feed_style.xsl"), path.join(main_dir, "output", "feed_style.xsl"), fs.constants.COPYFILE_EXCL)
+			flags = fs.constants.COPYFILE_EXCL;
+			if (cmd.templateFeed != undefined) {
+				if (path.extname(cmd.templateFeed) == ".xsl") {
+					path_file = pathEvalute(cmd.templateFeed)
+		
+					if (fs.existsSync(path_file)) {
+						template_file = path_file;
+						flags = undefined;
+
+						console.log(good(`Fichier de template pour le flux trouvé dans "${path_file}"`))
+					} else {
+						console.log(error(`Le fichier "${path.basename(cmd.templateFeed)}" n'existe pas! Fichier par défaut utilisé`))
+						template_file = path.join(__dirname, "basic_file", "feed_style.xsl")
+					}
+				} else {
+					console.log(error(`Le fichier "${path.basename(cmd.templateFeed)}" n'est pas un fichier .xsl! Fichier par défaut utilisé`))
+					template_file = path.join(__dirname, "basic_file", "feed_style.xsl")
+				}
+			} else {
+				template_file = path.join(__dirname, "basic_file", "feed_style.xsl")
+			}
+
+			fs.copyFileSync(template_file, path.join(main_dir, "output", "feed_style.xsl"), flags)
 			console.log(good(`Le fichier "feed_style.xsl" à bien été copié!`))
 		} catch(err) {
 			if (err.code == "EEXIST") {
@@ -264,8 +287,6 @@ module.exports = (delete_output) => {
 				console.log(error(`Erreur inconue lors de la copie de "feed_style.xsl" :\n${err.Error}`))
 			}
 		}
-
-		var index_template = fs.readFileSync(path.join(__dirname, "basic_file", "index.mustache"), "utf8");
 
 		var render_object = {
 			"podcast_title": information.title,
@@ -289,6 +310,28 @@ module.exports = (delete_output) => {
 			})
 		})
 
+		if (cmd.templatePodcast != undefined) {
+			if (path.extname(cmd.templatePodcast) == ".mustache") {
+				path_file = pathEvalute(cmd.templatePodcast)
+	
+				if (fs.existsSync(path_file)) {
+					template_file = path_file;
+
+					console.log(good(`Fichier de template pour l'index trouvé dans "${path_file}"`))
+				} else {
+					console.log(error(`Le fichier "${path.basename(cmd.templatePodcast)}" n'existe pas! Fichier par défaut utilisé`))
+					template_file = path.join(__dirname, "basic_file", "index.mustache")
+				}
+			} else {
+				console.log(error(`Le fichier "${path.basename(cmd.templatePodcast)}" n'est pas un fichier .mustache! Fichier par défaut utilisé`))
+				template_file = path.join(__dirname, "basic_file", "episode.mustache")
+			}
+		} else {
+			template_file = path.join(__dirname, "basic_file", "episode.mustache")
+		}
+
+		var index_template = fs.readFileSync(template_file, "utf8");
+
 		var index_html = mustache.render(index_template, render_object)
 
 		fs.writeFileSync(path.join(main_dir, "output", "index.html"), index_html);
@@ -296,7 +339,27 @@ module.exports = (delete_output) => {
 
 		console.log(inf(`\nCréation des fichiers des épisodes dans "ep/"`))
 
-		ep_template = fs.readFileSync(path.join(__dirname, "basic_file", "episode.mustache"), "utf8");
+		if (cmd.templateEpisode != undefined) {
+			if (path.extname(cmd.templateEpisode) == ".mustache") {
+				path_file = pathEvalute(cmd.templateEpisode)
+	
+				if (fs.existsSync(path_file)) {
+					template_file = path_file;
+
+					console.log(good(`Fichier de template pour les épisodes trouvé dans "${path_file}"`))
+				} else {
+					console.log(error(`Le fichier "${path.basename(cmd.templateEpisode)}" n'existe pas! Fichier par défaut utilisé`))
+					template_file = path.join(__dirname, "basic_file", "episode.mustache")
+				}
+			} else {
+				console.log(error(`Le fichier "${path.basename(cmd.templateEpisode)}" n'est pas un fichier .mustache! Fichier par défaut utilisé`))
+				template_file = path.join(__dirname, "basic_file", "episode.mustache")
+			}
+		} else {
+			template_file = path.join(__dirname, "basic_file", "episode.mustache")
+		}
+
+		ep_template = fs.readFileSync(template_file, "utf8");
 
 		information.items.forEach((ep) => {
 			pub_date = new Date(parseInt(ep.pubDate))
@@ -339,6 +402,13 @@ function rmdir(d) {
     }
 }
 
+function pathEvalute(arg_path) {
+	if (path.isAbsolute(arg_path)) {
+		return arg_path
+	} else {
+		return path.join(main_dir, arg_path)
+	}
+}
 /*
 main_dir:
 |- information.md
