@@ -23,6 +23,8 @@ Pour installer le module, il faut commencer par télécharger [NodeJS](https://n
 npm install castbuilder -g
 ```
 
+(Sur Linux il faut avoir les droits d'administration, utilisez sudo devant!)
+
 Le module est installé 🎉!
 
 ## Utilisation
