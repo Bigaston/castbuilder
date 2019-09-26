@@ -1,5 +1,7 @@
 # castbuilder
 
+[![NPM](https://nodei.co/npm/castbuilder.png)](https://nodei.co/npm/castbuilder/)
+
 [![NPM Version](http://img.shields.io/npm/v/castbuilder.svg?style=flat)](https://www.npmjs.org/package/castbuilder)
 [![NPM Downloads](https://img.shields.io/npm/dm/castbuilder.svg?style=flat)](https://npmcharts.com/compare/castbuilder?minimal=true)
 [![Install Size](https://packagephobia.now.sh/badge?p=castbuilder)](https://packagephobia.now.sh/result?p=castbuilder)
