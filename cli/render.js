@@ -254,39 +254,6 @@ module.exports = (delete_output) => {
 		console.log(inf("\nGénération des fichiers HTML"));
 
 		try {
-			fs.copyFileSync(path.join(__dirname, "basic_file", "style.css"), path.join(main_dir, "output", "style.css"), fs.constants.COPYFILE_EXCL)
-			console.log(good(`Le fichier "style.css" à bien été copié!`))
-		} catch(err) {
-			if (err.code == "EEXIST") {
-				console.log(warning(`Le fichier "style.css" existe déjà, il ne sera pas remplacé`))
-			} else {
-				console.log(error(`Erreur inconue lors de la copie de "style.css" :\n${err.Error}`))
-			}
-		}
-
-		try {
-			fs.copyFileSync(path.join(__dirname, "basic_file", "ep_style.css"), path.join(main_dir, "output/ep", "ep_style.css"), fs.constants.COPYFILE_EXCL)
-			console.log(good(`Le fichier "ep_style.css" à bien été copié!`))
-		} catch(err) {
-			if (err.code == "EEXIST") {
-				console.log(warning(`Le fichier "ep_style.css" existe déjà, il ne sera pas remplacé`))
-			} else {
-				console.log(error(`Erreur inconue lors de la copie de "ep_style.css" :\n${err.Error}`))
-			}
-		}
-
-		try {
-			fs.copyFileSync(path.join(__dirname, "basic_file", "ep_script.js"), path.join(main_dir, "output/ep", "ep_script.js"), fs.constants.COPYFILE_EXCL)
-			console.log(good(`Le fichier "ep_script.js" à bien été copié!`))
-		} catch(err) {
-			if (err.code == "EEXIST") {
-				console.log(warning(`Le fichier "ep_style.css" existe déjà, il ne sera pas remplacé`))
-			} else {
-				console.log(error(`Erreur inconue lors de la copie de "ep_style.css" :\n${err.Error}`))
-			}
-		}
-
-		try {
 			fs.copyFileSync(path.join(__dirname, "basic_file", "feed_style.xsl"), path.join(main_dir, "output", "feed_style.xsl"), fs.constants.COPYFILE_EXCL)
 			console.log(good(`Le fichier "feed_style.xsl" à bien été copié!`))
 		} catch(err) {
