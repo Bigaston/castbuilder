@@ -19,6 +19,8 @@ Autre information, ce projet est encore en cours de développement. Il fonctionn
 
 J'ai quelques idées d'améliorations dans le futur, n'hésitez pas à suivre le développement du projet ici même dans la partie projet!
 
+**[Changelog](http://castbuilder.balado.tools/changelog)**
+
 ## Instalation 
 Pour installer le module, il faut commencer par télécharger [NodeJS](https://nodejs.org/en/) puis executez la commande :
 ```
