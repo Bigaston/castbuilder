@@ -21,8 +21,13 @@ parametres = {
 	"url": ""
 }
 
-module.exports = (easy_mod) => {
-	if (easy_mod != undefined) {
+module.exports = (cmd) => {
+	if (cmd.path != undefined) {
+		main_dir = pathEvalute(cmd.path)
+		console.log(good(`Création de l'épisode dans "${path.join(main_dir, "episode")}"`))
+	}
+
+	if (cmd.easy != undefined) {
 		console.log(info("Mode facile activé! Merci de répondre aux questions suivantes!"))
 
 		const rl = readline.createInterface({
@@ -66,7 +71,7 @@ module.exports = (easy_mod) => {
 												rl.question(info("\nQuel est votre numéro d'épisode (0 ou vide si il n'y en a pas)\n> "), (answer) => {
 													parametres.episode = answer
 
-													rl.question(info("\nQuelle est l'URL associée à votre épisode?\n> "), (answer) => {
+													rl.question(info("\nQuelle est l'URL associée à votre épisode? (Laissez vide pour la définir automatiquement en fonction du site généré)\n> "), (answer) => {
 														parametres.url = answer;
 
 														rl.question(info("\nQuel est le type de l'épisode? (full, trailer, bonus)\n> "), (answer) => {
@@ -159,6 +164,36 @@ function getImageInformation(answer, _callback) {
 	}
 }
 
+function getUrlInformation(guid, _callback) {
+	if (parametres.url == "") {
+		let info = readline.createInterface({
+			input: fs.createReadStream(path.join(main_dir, "information.md"))
+		})
+		
+		info.on("line", (line) => {
+			let cut = line.split(" ");
+						
+			if(cut[0].replace(":", "") == "link") {
+				parametres.url = cut.slice(1).join(" ") + "/ep/" + guid + ".html";
+			}
+		})
+		
+		info.on("close", (line) => {
+			if (parametres.url == "") {
+				console.log(error("\nL'url de base n'est pas définie dans information.md est vide!"))
+				parametres.url = "";
+			} else {
+				console.log(good("\nURL de l'épisode généré : " + parametres.url))
+			}
+
+			_callback();
+		})
+	} else {
+		_callback();
+	}
+}
+
+
 function generationFichier(guid) {
 	chaine_fichier = "";
 
@@ -168,11 +203,21 @@ function generationFichier(guid) {
 		chaine_fichier = chaine_fichier + cle + ": " + parametres[cle] + "\n"
 	})
 
-	chaine_fichier = chaine_fichier + "------\n";
-	try {
-		fs.writeFileSync(path.join(main_dir, "episode", guid + ".md"), chaine_fichier)
-		console.log(good("Episode généré et disponible dans le dossier episode/ sous le nom " + guid + ".md !"))
-	} catch (err) {
-		console.log(err)
+	getUrlInformation(guid, () => {
+		chaine_fichier = chaine_fichier + "------\n";
+		try {
+			fs.writeFileSync(path.join(main_dir, "episode", guid + ".md"), chaine_fichier)
+			console.log(good("Episode généré et disponible dans le dossier episode/ sous le nom " + guid + ".md !"))
+		} catch (err) {
+			console.log(err)
+		}
+	})
+}
+
+function pathEvalute(arg_path) {
+	if (path.isAbsolute(arg_path)) {
+		return arg_path
+	} else {
+		return path.join(main_dir, arg_path)
 	}
 }
