@@ -1,6 +1,8 @@
 const fs = require("fs");
 const path = require("path");
 const chalk = require("chalk");
+const fetch = require('node-fetch');
+const package = require("../package.json");
 
 const error = chalk.bold.red;
 const warning = chalk.yellow;
@@ -59,6 +61,8 @@ module.exports = (cmd) => {
 	})
 
 	console.log(info("Création des fichiers de base terminée!"))
+
+	checkVersion();
 }
 
 function pathEvalute(arg_path) {
@@ -67,6 +71,17 @@ function pathEvalute(arg_path) {
 	} else {
 		return path.join(main_dir, arg_path)
 	}
+}
+
+function checkVersion() {
+	fetch("https://raw.githubusercontent.com/Bigaston/castbuilder/master/package.json")
+		.then(res => res.json())
+		.then(body => {
+			if (body.version > package.version) {
+				console.log(error(`\n\nUne nouvelle version de Castbuilder est en ligne!\nUtilisez "npm i -g castbuilder" pour mettre à jour!`))
+				console.log(error(`Votre version : ${package.version} | Dernière version : ${body.version}`))
+			}
+		})
 }
 
 /*

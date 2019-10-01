@@ -4,7 +4,17 @@
 <head>
 	<meta charset="UTF-8">
 	<title>{{ podcast_title }}</title>
-    <style type="text/css">
+	<link href="{{ self_link }}/feed.xml" rel="alternate" type="application/rss+xml" title="{{ podcast_title }}">
+	
+	<!-- Meta Tag -->
+	<meta name="description" content="{{ small_desc }}">
+    <meta property="og:title" content="{{ podcast_title}}">
+	<meta property="og:site_name" content="{{ podcast_title }}">
+	<meta property="og:url" content="{{ self_link }}">
+	<meta property="og:description" content="{{ small_desc }}">
+	<meta property="og:type" content="blog">
+	<meta property="og:image" content="{{ self_link }}/{{ image_link }}">
+	<style type="text/css">
 		@import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
 		@import url("https://use.fontawesome.com/releases/v5.8.1/css/all.css");
 

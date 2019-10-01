@@ -305,12 +305,20 @@ module.exports = (cmd) => {
 			}
 		}
 
+		small_desc = information.description;
+
+		if (small_desc.length > 200) {
+			small_desc = small_desc.substring(0,197) + "..."
+		}
+
 		var render_object = {
 			"podcast_title": information.title,
 			"podcast_author": information.author,
 			"image_link": "img/" + information.image,
 			"podcast_description": new showdown.Converter().makeHtml(information.description),
 			"podcast_copyright": information.copyright,
+			"self_link": information.link,
+			"small_desc": small_desc,
 			"episodes": []
 		}
 
@@ -380,8 +388,15 @@ module.exports = (cmd) => {
 
 		information.items.forEach((ep) => {
 			pub_date = new Date(parseInt(ep.pubDate))
+
+			small_desc = ep.description;
+
+			if (small_desc.length > 200) {
+				small_desc = small_desc.substring(0,197) + "..."
+			}
+
 			render_object = {
-				"ep_image": "../img/" + ep.image,
+				"ep_image": "img/" + ep.image,
 				"ep_title": ep.title,
 				"ep_desc": new showdown.Converter().makeHtml(ep.description),
 				"duree_ep": ep.duration,
@@ -389,13 +404,18 @@ module.exports = (cmd) => {
 				"podcast_author": information.author,
 				"podcast_copyright": information.copyright,
 				"date_sortie": pub_date.getDate() + "/" + (pub_date.getMonth()+1) + "/" + pub_date.getFullYear() + " " + addZero((pub_date.getHours()-2)) + ":" + addZero(pub_date.getMinutes()),
+				"small_desc": small_desc,
+				"self_link": information.link,
+				"image_absolute": information.link + "/img/" + ep.image,
 				"file_link": ep.audio
 			}
 
 			var ep_html = mustache.render(ep_template, render_object)
 			fs.writeFileSync(path.join(main_dir, "output/ep", ep.guid + ".html"), ep_html);
-			console.log(good(`Fichier "${ep.guid}.html" créé`))			
+			console.log(good(`Fichier "${ep.guid}.html" créé`))		
 		})
+
+		checkVersion();
 	}
 }
 
@@ -425,6 +445,17 @@ function pathEvalute(arg_path) {
 	} else {
 		return path.join(main_dir, arg_path)
 	}
+}
+
+function checkVersion() {
+	fetch("https://raw.githubusercontent.com/Bigaston/castbuilder/master/package.json")
+		.then(res => res.json())
+		.then(body => {
+			if (body.version > package.version) {
+				console.log(error(`\n\nUne nouvelle version de Castbuilder est en ligne!\nUtilisez "npm i -g castbuilder" pour mettre à jour!`))
+				console.log(error(`Votre version : ${package.version} | Dernière version : ${body.version}`))
+			}
+		})
 }
 /*
 main_dir:

@@ -4,6 +4,17 @@
 <head>
 	<meta charset="UTF-8">
 	<title>{{ ep_title }}</title>
+
+    <!-- Meta Tag -->
+	<meta name="description" content="{{ small_desc }}">
+    <meta property="og:title" content="{{ podcast_title}}">
+	<meta property="og:site_name" content="{{ podcast_title }}">
+	<meta property="og:url" content="{{ self_link }}">
+	<meta property="og:description" content="{{ small_desc }}">
+	<meta property="og:type" content="blog">
+	<meta property="og:image" content="{{ self_link }}/{{ ep_image }}">
+	<meta property="og:locale" content="fr_FR">
+
     <style type="text/css">
         @import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
         @import url("https://use.fontawesome.com/releases/v5.8.1/css/all.css");
@@ -195,7 +206,7 @@
             <a href="../index.html">Retourner à la liste des épisodes</a>
             <header>
                 <h1>{{ ep_title }}</h1>
-				<img id="podlogo" src="{{{ ep_image }}}" alt="Logo de {{ ep_title }}">
+				<img id="podlogo" src="../{{{ ep_image }}}" alt="Logo de {{ ep_title }}">
                 <p>⏱{{duree_ep}} | 📅{{date_sortie}} | <a href="{{file_link}}" target="_blank">💾Télécharger</a></p>
                 </div>
             </header>
