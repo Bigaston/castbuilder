@@ -19,8 +19,15 @@ var files = [
 	}
 ]
 
-module.exports = () => {
+module.exports = (cmd) => {
 	main_dir = process.cwd();
+
+	if (cmd.path != undefined) {
+		main_dir = pathEvalute(cmd.path)
+		console.log(good(`Création de l'arboréscence dans "${main_dir}"`))
+		fs.mkdirSync(main_dir, { recursive: true });
+	}
+
 	console.log(info("Initialisation du projet\nCréation des dossiers"))
 
 	folder.forEach((f) => {
@@ -52,6 +59,14 @@ module.exports = () => {
 	})
 
 	console.log(info("Création des fichiers de base terminée!"))
+}
+
+function pathEvalute(arg_path) {
+	if (path.isAbsolute(arg_path)) {
+		return arg_path
+	} else {
+		return path.join(main_dir, arg_path)
+	}
 }
 
 /*

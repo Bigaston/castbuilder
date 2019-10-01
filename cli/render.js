@@ -4,8 +4,9 @@ const chalk = require("chalk");
 const readline = require('readline');
 const rss = require("rss");
 const showdown  = require('showdown');
-const mustache = require("mustache")
-const package = require("../package.json")
+const mustache = require("mustache");
+const fetch = require('node-fetch');
+const package = require("../package.json");
 
 const error = chalk.bold.red;
 const warning = chalk.yellow;
@@ -22,6 +23,16 @@ var information = {
 main_dir = process.cwd();
 
 module.exports = (cmd) => {
+	if (cmd.path != undefined) {
+		main_dir = pathEvalute(cmd.path)
+		console.log(good(`Création à partir de dans "${main_dir}"`))
+	}
+
+	if (!fs.existsSync(path.join(main_dir, "information.md"))) {
+		console.log(error(`Le fichier "information.md" n'éxiste pas! Il est nécessaire pour lancer le traitement.`))
+		process.exit(1);
+	}
+	
 	console.log(inf(`Démarage de la création du site.`))
 
 	let is_desc = false;
@@ -99,7 +110,12 @@ module.exports = (cmd) => {
 			ep.on("close", (line) => {
 				information.items[i].description = desc_ep + "";
 				console.log(good(`Fichier "${f}" importé!`))
-				nb_file_read++;
+
+				fetch(information.items[i].audio)
+					.then(res => {
+						information.items[i].size = res.headers.get("Content-Length")
+						nb_file_read++;
+					})
 			})
 		})
 	
@@ -207,7 +223,8 @@ module.exports = (cmd) => {
 					{"enclosure" : {
 						_attr: {
 							url: item.audio,
-							type: "audio/mpeg"
+							type: "audio/mpeg",
+							length: item.size
 						}
 					}}
 				]
@@ -324,10 +341,10 @@ module.exports = (cmd) => {
 				}
 			} else {
 				console.log(error(`Le fichier "${path.basename(cmd.templatePodcast)}" n'est pas un fichier .mustache! Fichier par défaut utilisé`))
-				template_file = path.join(__dirname, "basic_file", "episode.mustache")
+				template_file = path.join(__dirname, "basic_file", "index.mustache")
 			}
 		} else {
-			template_file = path.join(__dirname, "basic_file", "episode.mustache")
+			template_file = path.join(__dirname, "basic_file", "index.mustache")
 		}
 
 		var index_template = fs.readFileSync(template_file, "utf8");

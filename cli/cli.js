@@ -16,8 +16,9 @@ command
 command
 	.command("init")
 	.description("Crée l'arborescence basique des fichiers")
-	.action((cmd, env) => {
-		init();
+	.arguments("[path]")
+	.action((main_path, cmd) => {
+		init({"path": main_path});
 	})
 
 command
@@ -27,16 +28,18 @@ command
 	.option("-p, --template-podcast <file path>", "Spécifie le fichier .mustache qui servira de template pour le rendu de l'index")
 	.option("-e, --template-episode <file path>", "Spécifie le fichier .mustache qui servira de template pour le rendu des épisodes")
 	.option("-f, --template-feed <file path>", "Spécifie le fichier .xsl qui servira de template pour l'affichage du flux RSS")
-	.action((cmd, env) => {
-		render({"override": cmd.override, "templatePodcast": cmd.templatePodcast, "templateEpisode": cmd.templateEpisode, "templateFeed": cmd.templateFeed});
+	.arguments("[path]")
+	.action((main_path, cmd) => {
+		render({"override": cmd.override, "templatePodcast": cmd.templatePodcast, "templateEpisode": cmd.templateEpisode, "templateFeed": cmd.templateFeed, "path": main_path});
 	})
 
 command
 	.command("new")
 	.description("Crée un nouvel épisode")
 	.option("-e, --easy", "Active le mode facile")
-	.action((cmd, env) => {
-		new_ep(cmd.easy);
+	.arguments("[path]")
+	.action((main_path, cmd) => {
+		new_ep({"easy":cmd.easy, "path": main_path});
 	})
 
 command.on('--help', function(){
