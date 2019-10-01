@@ -32,7 +32,7 @@ npm install castbuilder -g
 Le module est installé 🎉!
 
 ## Utilisation
-Rnedez vous dans le dossier où vous souhaitez installer votre site web (vous pourrez de toute façon le déplacer plus tard!) et executez dans un terminal de commande :
+Rendez vous dans le dossier où vous souhaitez installer votre site web (vous pourrez de toute façon le déplacer plus tard!) et executez dans un terminal de commande :
 ```
 castbuilder init
 ```
