@@ -14,6 +14,7 @@
 	<meta property="og:type" content="blog">
 	<meta property="og:image" content="{{ self_link }}/{{ ep_image }}">
 	<meta property="og:locale" content="fr_FR">
+    <meta name="theme-color" content="#ECEFF1">
 
     <style type="text/css">
         @import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
@@ -208,7 +209,8 @@
                 <h1>{{ ep_title }}</h1>
 				<img id="podlogo" src="../{{{ ep_image }}}" alt="Logo de {{ ep_title }}">
                 <p>⏱{{duree_ep}} | 📅{{date_sortie}} | <a href="{{file_link}}" target="_blank">💾Télécharger</a></p>
-                </div>
+                <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-text="Ecoutez l'épisode de {{ podcast_title }} : {{ ep_title }}" data-url="{{ ep_link }}" data-hashtags="podcast" data-show-count="false">Tweet</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+				<iframe src="https://www.facebook.com/plugins/share_button.php?href={{ ep_link }}&layout=button&size=small&width=73&height=20&appId" width="73" height="20" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true" allow="encrypted-media"></iframe>
             </header>
 
 			<section>

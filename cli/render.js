@@ -407,7 +407,8 @@ module.exports = (cmd) => {
 				"small_desc": small_desc,
 				"self_link": information.link,
 				"image_absolute": information.link + "/img/" + ep.image,
-				"file_link": ep.audio
+				"file_link": ep.audio,
+				"ep_link": ep.url
 			}
 
 			var ep_html = mustache.render(ep_template, render_object)

@@ -1,5 +1,10 @@
 ## Changelog de Castbuilder
 
+### 1.0.16
+**Ajouts :**
+- Ajout du tag meta color dans le template par défaut
+- Ajout des boutons de partages Facebook et Twitter
+
 ### 1.0.15
 **Ajouts :**
 - Lien vers le flux RSS dans l'entête de index.html par défaut
