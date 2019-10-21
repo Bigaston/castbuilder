@@ -11,6 +11,8 @@
 > unlisted : accessible uniquement via l'URL de l'épisode  
 - Ajout d'un player audio dans le flux RSS affiché via le XSL par défaut
 
+(Les idées de texte uniquement présent sur le site web ou sur le flux RSS viennent de Podcastics!)
+
 **Correction :**
 - Vérification de *information.md* au lancement de new
 
