@@ -5,10 +5,10 @@
 - Possibilitée de mettre du texte uniquement sur le site web avec `%website% %/website%`
 - Possibilitée de mettre du texte uniquement sur le flux avec `%feed% %/feed%`
 - Ajout de la possibilitée de définir l'accessibilitée d'un épisode :
-> all : présent partout
-> feed : présent uniquement sur le flux RSS
-> website : présent uniquement sur le site web
-> unlisted : accessible uniquement via l'URL de l'épisode
+> all : présent partout  
+> feed : présent uniquement sur le flux RSS  
+> website : présent uniquement sur le site web  
+> unlisted : accessible uniquement via l'URL de l'épisode  
 - Ajout d'un player audio dans le flux RSS affiché via le XSL par défaut
 
 **Correction :**
