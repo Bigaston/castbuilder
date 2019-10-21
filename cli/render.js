@@ -14,7 +14,8 @@ const good = chalk.green;
 const inf = chalk.blue.bold;
 
 const valid_info_tag = ["title", "author", "email", "category", "subcategory", "copyright", "type", "image", "link", "keyword", "language", "explicit"];
-const valid_ep_tag = ["title", "author", "audio", "pubDate", "duration", "image", "keyword", "url", "season", "episode", "episodeType"];
+const valid_ep_tag = ["title", "author", "audio", "pubDate", "duration", "image", "keyword", "url", "season", "episode", "episodeType", "privacy"];
+const privacy_type = ["all", "website", "feed", "unlisted"]
 
 var information = {
 	"items": []
@@ -163,7 +164,7 @@ module.exports = (cmd) => {
 		console.log(inf("Création du flux RSS"));
 		var feed = new rss({
 			title: information.title,
-			description: new showdown.Converter().makeHtml(information.description),
+			description: new showdown.Converter().makeHtml(information.description.replace(/%website%.*%\/website%/gs, "").replace("%feed%", "").replace("%/feed%", "")),
 			generator: "Castbuilder (v" + package.version + ")",
 			feed_url: information.link + "/feed.xml",
 			site_url: information.link,
@@ -202,47 +203,49 @@ module.exports = (cmd) => {
 
 		information.items.forEach((item) => {
 			//url.resolve(information.link, "ep/" + item.guid + ".html")
+			if (item.privacy == undefined || item.privacy == "feed" || item.privacy == "all" || !privacy_type.includes(item.privacy)) {
 
-			ep_info = {
-				title: item.title,
-				description: new showdown.Converter().makeHtml(item.description),
-				url: item.url,
-				guid: item.guid,
-				author: item.author,
-				date: new Date(parseInt(item.pubDate)),
-				custom_elements: [
-					{'itunes:author': item.author},
-					{'itunes:subtitle': item.description},
-					{'itunes:image': {
-					  _attr: {
-						href: information.link + "/img/" + information.image
-					  }
-					}},
-					{'itunes:duration': item.duration},
-					{"itunes:episodeType": "full"},
-					{"enclosure" : {
+				ep_info = {
+					title: item.title,
+					description: new showdown.Converter().makeHtml(item.description.replace(/%website%.*%\/website%/gs, "").replace("%feed%", "").replace("%/feed%", "")),
+					url: item.url,
+					guid: item.guid,
+					author: item.author,
+					date: new Date(parseInt(item.pubDate)),
+					custom_elements: [
+						{'itunes:author': item.author},
+						{'itunes:subtitle': item.description},
+						{'itunes:image': {
 						_attr: {
-							url: item.audio,
-							type: "audio/mpeg",
-							length: item.size
+							href: information.link + "/img/" + information.image
 						}
-					}}
-				]
-			}
+						}},
+						{'itunes:duration': item.duration},
+						{"itunes:episodeType": "full"},
+						{"enclosure" : {
+							_attr: {
+								url: item.audio,
+								type: "audio/mpeg",
+								length: item.size
+							}
+						}}
+					]
+				}
 
-			if (item.episode != "") {
-				ep_info.custom_elements.push({"itunes:episode": item.episode})
-			}
+				if (item.episode != "") {
+					ep_info.custom_elements.push({"itunes:episode": item.episode})
+				}
 
-			if (item.season != "") {
-				ep_info.custom_elements.push({"itunes:season" : item.season})
-			}
+				if (item.season != "") {
+					ep_info.custom_elements.push({"itunes:season" : item.season})
+				}
 
-			if (item.episodeType != "") {
-				ep_info.custom_elements.push({"itunes:episodeType" : item.episodeType})
-			}
+				if (item.episodeType != "") {
+					ep_info.custom_elements.push({"itunes:episodeType" : item.episodeType})
+				}
 
-			feed.item(ep_info)
+				feed.item(ep_info)
+			}
 		})
 
 		xml_sortie = feed.xml({indent:true}).replace(`<?xml version="1.0" encoding="UTF-8"?>`, `<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type="text/xsl" href="feed_style.xsl" ?>`)
@@ -315,7 +318,7 @@ module.exports = (cmd) => {
 			"podcast_title": information.title,
 			"podcast_author": information.author,
 			"image_link": "img/" + information.image,
-			"podcast_description": new showdown.Converter().makeHtml(information.description),
+			"podcast_description": new showdown.Converter().makeHtml(information.description.replace("%website%", "").replace("%/website%", "").replace(/%feed%.*%\/feed%/gs, "")),
 			"podcast_copyright": information.copyright,
 			"self_link": information.link,
 			"small_desc": small_desc,
@@ -323,16 +326,18 @@ module.exports = (cmd) => {
 		}
 
 		information.items.forEach((ep) => {
-			pub_date = new Date(parseInt(ep.pubDate))
-			render_object.episodes.push({
-				"ep_image": "img/" + ep.image,
-				"ep_title": ep.title,
-				"ep_desc": new showdown.Converter().makeHtml(ep.description),
-				"duree_ep": ep.duration,
-				"date_sortie": pub_date.getDate() + "/" + (pub_date.getMonth()+1) + "/" + pub_date.getFullYear() + " " + addZero((pub_date.getHours()-2)) + ":" + addZero(pub_date.getMinutes()),
-				"file_link": ep.audio,
-				"ep_guid": ep.guid
-			})
+			if (ep.privacy == undefined || ep.privacy == "all" || ep.privacy == "website" || !privacy_type.includes(ep.privacy)) {
+				pub_date = new Date(parseInt(ep.pubDate))
+				render_object.episodes.push({
+					"ep_image": "img/" + ep.image,
+					"ep_title": ep.title,
+					"ep_desc": new showdown.Converter().makeHtml(ep.description.replace("%website%", "").replace("%/website%", "").replace(/%feed%.*%\/feed%/gs, "")),
+					"duree_ep": ep.duration,
+					"date_sortie": pub_date.getDate() + "/" + (pub_date.getMonth()+1) + "/" + pub_date.getFullYear() + " " + addZero((pub_date.getHours()-2)) + ":" + addZero(pub_date.getMinutes()),
+					"file_link": ep.audio,
+					"ep_guid": ep.guid
+				})
+			}
 		})
 
 		if (cmd.templatePodcast != undefined) {
@@ -387,33 +392,35 @@ module.exports = (cmd) => {
 		ep_template = fs.readFileSync(template_file, "utf8");
 
 		information.items.forEach((ep) => {
-			pub_date = new Date(parseInt(ep.pubDate))
+			if (ep.privacy == undefined ||  ep.privacy == "all" || ep.privacy == "website" || ep.privacy == "unlisted" || !privacy_type.includes(ep.privacy)) {
+				pub_date = new Date(parseInt(ep.pubDate))
 
-			small_desc = ep.description;
-
-			if (small_desc.length > 200) {
-				small_desc = small_desc.substring(0,197) + "..."
+				small_desc = ep.description;
+	
+				if (small_desc.length > 200) {
+					small_desc = small_desc.substring(0,197) + "..."
+				}
+	
+				render_object = {
+					"ep_image": "img/" + ep.image,
+					"ep_title": ep.title,
+					"ep_desc": new showdown.Converter().makeHtml(ep.description.replace("%website%", "").replace("%/website%", "").replace(/%feed%.*%\/feed%/gs, "")),
+					"duree_ep": ep.duration,
+					"podcast_title": information.title,
+					"podcast_author": information.author,
+					"podcast_copyright": information.copyright,
+					"date_sortie": pub_date.getDate() + "/" + (pub_date.getMonth()+1) + "/" + pub_date.getFullYear() + " " + addZero((pub_date.getHours()-2)) + ":" + addZero(pub_date.getMinutes()),
+					"small_desc": small_desc,
+					"self_link": information.link,
+					"image_absolute": information.link + "/img/" + ep.image,
+					"file_link": ep.audio,
+					"ep_link": ep.url
+				}
+	
+				var ep_html = mustache.render(ep_template, render_object)
+				fs.writeFileSync(path.join(main_dir, "output/ep", ep.guid + ".html"), ep_html);
+				console.log(good(`Fichier "${ep.guid}.html" créé`))	
 			}
-
-			render_object = {
-				"ep_image": "img/" + ep.image,
-				"ep_title": ep.title,
-				"ep_desc": new showdown.Converter().makeHtml(ep.description),
-				"duree_ep": ep.duration,
-				"podcast_title": information.title,
-				"podcast_author": information.author,
-				"podcast_copyright": information.copyright,
-				"date_sortie": pub_date.getDate() + "/" + (pub_date.getMonth()+1) + "/" + pub_date.getFullYear() + " " + addZero((pub_date.getHours()-2)) + ":" + addZero(pub_date.getMinutes()),
-				"small_desc": small_desc,
-				"self_link": information.link,
-				"image_absolute": information.link + "/img/" + ep.image,
-				"file_link": ep.audio,
-				"ep_link": ep.url
-			}
-
-			var ep_html = mustache.render(ep_template, render_object)
-			fs.writeFileSync(path.join(main_dir, "output/ep", ep.guid + ".html"), ep_html);
-			console.log(good(`Fichier "${ep.guid}.html" créé`))		
 		})
 
 		checkVersion();

@@ -29,6 +29,11 @@ module.exports = (cmd) => {
 		console.log(good(`Création de l'épisode dans "${path.join(main_dir, "episode")}"`))
 	}
 
+	if (!fs.existsSync(path.join(main_dir, "information.md"))) {
+		console.log(error(`Le fichier "information.md" n'éxiste pas! Il est nécessaire pour lancer le traitement.`))
+		process.exit(1);
+	}
+
 	if (cmd.easy != undefined) {
 		console.log(info("Mode facile activé! Merci de répondre aux questions suivantes!"))
 
@@ -79,10 +84,14 @@ module.exports = (cmd) => {
 														rl.question(info("\nQuel est le type de l'épisode? (full, trailer, bonus)\n> "), (answer) => {
 															parametres.episodeType = answer;
 
-															rl.question(info("\nQuel est l'id unique de votre épisode (utilisé dans le GUID)\n> "), (answer) => {
-																rl.close();
-			
-																generationFichier(answer);
+															rl.question(info("\nQuelle est l'accéssibilitée de votre épisode? (all, feed, website, unlisted)\n> "), (answer) => {
+																parametres.privacy = answer;
+
+																rl.question(info("\nQuel est l'id unique de votre épisode (utilisé dans le GUID)\n> "), (answer) => {
+																	rl.close();
+				
+																	generationFichier(answer);
+																})
 															})
 														})
 													})

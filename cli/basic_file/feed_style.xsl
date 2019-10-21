@@ -146,6 +146,11 @@
                         font-size: 12px;
                         color: #566573;
                     }
+
+                    audio {
+                        width: 100%;
+                        margin: 3px;
+                    }
                 </style>
             </head>
 
@@ -188,6 +193,12 @@
                                 </div>
                                 <div class="rightDiv">
                                     <h2><xsl:value-of select="title"/></h2>
+                                    <audio>
+                                        <xsl:attribute name="controls" />
+                                        <xsl:attribute name="src">
+                                            <xsl:value-of select="enclosure/@url"/>
+                                        </xsl:attribute>
+                                    </audio>
                                     <div class="description">
                                         <xsl:value-of select="description" disable-output-escaping="yes"/>
                                     </div>
