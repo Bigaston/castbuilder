@@ -1,4 +1,8 @@
 ## Changelog de Castbuilder
+### 1.1.2
+**Correction :**
+- Les chroniques apparaissaient en double dans les pages
+
 ### 1.1.1
 **Correction :**
 - Image pour les fichiers des auteurs

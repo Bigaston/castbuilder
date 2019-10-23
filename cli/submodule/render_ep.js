@@ -406,7 +406,6 @@ module.exports.render = (author, information, cmd) => {
             auteurs.forEach((a) => {
                 if (ep.author.includes(author[a].name)) {
                     ep_au = ep_au.replace(ep.author.match(author[a].name)[0], `<a href="../au/${author[ep.author.match(author[a].name)[0].replace(" ", "_").toLowerCase()].id}.html">${ep.author.match(author[a].name)[0]}</a>`)
-                    author[ep.author.match(author[a].name)[0].replace(" ", "_").toLowerCase()].ep.push(ep)
                 }
             })
 
