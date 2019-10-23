@@ -3,8 +3,7 @@
 
 <head>
 	<meta charset="UTF-8">
-	<title>{{ podcast_title }}</title>
-	<link href="{{ self_link }}/feed.xml" rel="alternate" type="application/rss+xml" title="{{ podcast_title }}">
+	<title>{{ author_name }} - {{podcast_title}}</title>
 	
 	<!-- Meta Tag -->
 	<meta name="description" content="{{ small_desc }}">
@@ -24,6 +23,12 @@
 			font-family: 'Roboto', sans-serif;
 			background-color: #ECEFF1;
 		}
+
+		center > a:first-child {
+            margin-bottom:2px;
+            font-size: 12px;
+            color: #566573;
+        }
 
 		header {
 			border: solid 1px #ABB2B9;
@@ -80,7 +85,7 @@
 			margin: 0px;
 		}
 
-		.leftDiv a, .leftDiv u {
+		.leftDiv > a, .leftDiv > u {
 			color: black;
 		}
 
@@ -159,28 +164,27 @@
 
     <body>
         <center>
+            <a href="../index.html">Retourner à la liste des épisodes</a>
             <header>
-                <h1>{{ podcast_title }}</h1>
-				<p>{{podcast_author}}</p>
-				<a id="feedlink" href="./feed.xml"><i class="fas fa-rss-square"></i> Accéder au flux</a><br/>
-				<img id="podlogo" src="{{{ image_link }}}" alt="Logo de {{ podcast_title }}">
-				<div>{{{ podcast_description }}}</div>
-				<a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-text="Ecoutez le podcast : {{ podcast_title }}" data-url="{{ self_link }}" data-hashtags="podcast" data-show-count="false">Tweet</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-				<iframe src="https://www.facebook.com/plugins/share_button.php?href={{ self_link}}&layout=button&size=small&width=73&height=20&appId" width="73" height="20" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true" allow="encrypted-media"></iframe>
+                <h1>{{ author_name }}</h1>
+				<img id="podlogo" src="{{{ image_link }}}" alt="Image de {{ author_name }}">
+				<div>{{{ author_description }}}</div>
+				<a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-text="Ecoutez les épisodes de {{author_name}}" data-url="{{ author_link }}" data-hashtags="podcast" data-show-count="false">Tweet</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+				<iframe src="https://www.facebook.com/plugins/share_button.php?href={{ author_link}}&layout=button&size=small&width=73&height=20&appId" width="73" height="20" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true" allow="encrypted-media"></iframe>
 			</header>
 
 			<section>
 				{{#episodes}}
 					<article class="podcast">
 						<div class="leftDiv">
-							<img src="{{ ep_image }}" alt="{{ ep_title }}">
+							<img src="../{{ ep_image }}" alt="{{ ep_title }}">
 							<p>⏱{{duree_ep}}</p>
 							<p>📅{{date_sortie}}</p>
 							<a href="{{file_link}}" target="_blank">💾Télécharger</a>
 							<p>🙋{{{ep_author}}}</p>
 						</div>
 						<div class="rightDiv">
-							<h2><a href="./ep/{{ ep_guid }}.html">{{ ep_title }}</a></h2>
+							<h2><a href="../ep/{{ ep_guid }}.html">{{ ep_title }}</a></h2>
 							<div class="description">
 								{{{ ep_desc }}}
 							</div>

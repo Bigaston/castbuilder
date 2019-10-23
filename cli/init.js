@@ -9,7 +9,7 @@ const warning = chalk.yellow;
 const good = chalk.green;
 const info = chalk.bold.blue;
 
-var folder = ["img", "episode"]
+var folder = ["img", "episode", "auteur"]
 var files = [
 	{
 		"origin": "information.md",
@@ -18,6 +18,10 @@ var files = [
 	{
 		"origin": "episode_example.md",
 		"dest": "./episode"
+	},
+	{
+		"origin": "author_example.md",
+		"dest": "./auteur"
 	}
 ]
 
