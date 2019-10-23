@@ -7,11 +7,11 @@
 	<link href="{{ self_link }}/feed.xml" rel="alternate" type="application/rss+xml" title="{{ podcast_title }}">
 	
 	<!-- Meta Tag -->
-	<meta name="description" content="{{ small_desc }}">
+	<meta name="description" content="Les différents auteurs de {{ podcast_title}}">
     <meta property="og:title" content="{{ podcast_title}}">
 	<meta property="og:site_name" content="{{ podcast_title }}">
 	<meta property="og:url" content="{{ self_link }}">
-	<meta property="og:description" content="{{ small_desc }}">
+	<meta property="og:description" content="Les différents auteurs de {{ podcast_title}}">
 	<meta property="og:type" content="blog">
 	<meta property="og:image" content="{{ self_link }}/{{ image_link }}">
     <meta name="theme-color" content="#ECEFF1">
@@ -32,9 +32,11 @@
 			box-shadow: 2px 2px #ABB2B9;
 		}
 
-		header a, header u {
-			color: black;
-		}
+        center > a:first-child {
+            margin-bottom:2px;
+            font-size: 12px;
+            color: #566573;
+        }
 
 		section {
 			border: solid 1px #ABB2B9;
@@ -163,34 +165,27 @@
 
     <body>
         <center>
+            <a href="index.html">Retourner à la liste des épisodes</a>
             <header>
                 <h1>{{ podcast_title }}</h1>
-				<p>{{podcast_author}}</p>
-				<a id="feedlink" href="./feed.xml"><i class="fas fa-rss-square"></i> Accéder au flux</a> <a href="auteurs.html">🙋 Les auteurs</a><br><br/>
+				<h2>Les auteurs</h2>
 				<img id="podlogo" src="{{{ image_link }}}" alt="Logo de {{ podcast_title }}">
-				<div>{{{ podcast_description }}}</div>
-				<a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-text="Ecoutez le podcast : {{ podcast_title }}" data-url="{{ self_link }}" data-hashtags="podcast" data-show-count="false">Tweet</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-				<iframe src="https://www.facebook.com/plugins/share_button.php?href={{ self_link}}&layout=button&size=small&width=73&height=20&appId" width="73" height="20" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true" allow="encrypted-media"></iframe>
 			</header>
 
 			<section>
-				{{#episodes}}
+				{{#auteurs}}
 					<article class="podcast">
 						<div class="leftDiv">
-							<img src="{{ ep_image }}" alt="{{ ep_title }}">
-							<p>⏱{{duree_ep}}</p>
-							<p>📅{{date_sortie}}</p>
-							<a href="{{file_link}}" target="_blank">💾Télécharger</a>
-							<p>🙋{{{ep_author}}}</p>
+							<img src="{{ au_image }}" alt="{{ au_name }}">
 						</div>
 						<div class="rightDiv">
-							<h2><a href="./ep/{{ ep_guid }}.html">{{ ep_title }}</a></h2>
+							<h2><a href="{{ au_link }}">{{ au_name }}</a></h2>
 							<div class="description">
-								{{{ ep_desc }}}
+								{{{ au_desc }}}
 							</div>
 						</div>
 					</article>
-				{{/episodes}}
+				{{/auteurs}}
 			</section>
 
 			<footer>

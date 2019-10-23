@@ -98,5 +98,7 @@ castbuilder render
 
 Vous trouverez votre site web et votre flux RSS dans le dossiet `output/` généré à ce moment! Plus qu'à copier tout ce contenu et à le mettre sur votre hébergement Web!
 
+Il est aussi possible de créer des auteurs, plus d'informations dans le Wiki!
+
 ## Remerciement
 Merci beaucoup à Phil_Goud pour son aide sur les fichiers .xsl ! Le fichier .xsl de Castbuilder se base sur son fichier .xsl disponible [ici](https://github.com/PhilGoud/podcast-XSL-template) !

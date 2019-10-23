@@ -74,6 +74,56 @@ module.exports.import = (_callback) => {
 }
 
 module.exports.render = (author, information, cmd) => {
+    console.log(inf("\nDémarage du rendu de la page des auteurs"))
+    if (cmd.templateAuthorIndex != undefined) {
+        if (path.extname(cmd.templateAuthorIndex) == ".mustache") {
+            path_file = pathEvalute(cmd.templateAuthorIndex)
+
+            if (fs.existsSync(path_file)) {
+                template_file = path_file;
+
+                console.log(good(`Fichier de template pour l'index des auteurs trouvé dans "${path_file}"`))
+            } else {
+                console.log(error(`Le fichier "${path.basename(cmd.templateAuthorIndex)}" n'existe pas! Fichier par défaut utilisé`))
+                template_file = path.join(__dirname, "../basic_file", "author_index.mustache")
+            }
+        } else {
+            console.log(error(`Le fichier "${path.basename(cmd.templateAuthorIndex)}" n'est pas un fichier .mustache! Fichier par défaut utilisé`))
+            template_file = path.join(__dirname, "../basic_file", "author_index.mustache")
+        }
+    } else {
+        template_file = path.join(__dirname, "../basic_file", "author_index.mustache")
+    }
+
+    var author_template = fs.readFileSync(template_file, "utf8");
+
+    auteur = Object.keys(author)
+
+    render_object = {
+        "podcast_title": information.title,
+        "podcast_author": information.author,
+        "image_link": "img/" + information.image,
+        "auteurs" : []
+    }
+
+    auteur.forEach((a) => {
+        au = author[a]
+
+        au_render = {
+            "au_image": "img/" + au.image,
+            "au_name": au.name,
+            "au_link": "au/" + au.id + ".html",
+            "au_desc": new showdown.Converter().makeHtml(au.description)
+        }
+
+        render_object.auteurs.push(au_render);
+    })
+
+    var author_html = mustache.render(author_template, render_object)
+
+    fs.writeFileSync(path.join(main_dir, "output/", "auteurs.html"), author_html);
+    console.log(good(`Fichier auteurs.html créé`))
+
     console.log(inf("\nDémarage du rendu des pages des auteurs"));
 
     try {
@@ -108,8 +158,6 @@ module.exports.render = (author, information, cmd) => {
     }
 
     var author_template = fs.readFileSync(template_file, "utf8");
-
-    auteur = Object.keys(author)
 
     auteur.forEach((a) => {
         au = author[a];

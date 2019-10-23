@@ -1,5 +1,16 @@
 ## Changelog de Castbuilder
 
+### 1.1.0
+#### Author Update
+**AJouts :**
+- Ajout des auteurs
+- Chaque auteur a sa propre page dans le dossier exporté `au/` et qui indique ses épisodes
+- Ajout de la page `auteurs.html` qui présente les différents auteurs
+- Ajout du nom des auteurs dans les fichiers des épisodes
+- Ajout d'un lien vers la page d'un auteur dans les épisodes
+
+**Une fois la mise à jour faite, utilisez `castbuilder init` pour réavoir une arborescence propre! Vos fichiers seront concervés.**
+
 ### 1.0.17
 **Ajouts :**
 - Possibilitée de mettre du texte uniquement sur le site web avec `%website% %/website%`

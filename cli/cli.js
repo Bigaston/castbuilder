@@ -28,7 +28,8 @@ command
 	.option("-p, --template-podcast <file path>", "Spécifie le fichier .mustache qui servira de template pour le rendu de l'index")
 	.option("-e, --template-episode <file path>", "Spécifie le fichier .mustache qui servira de template pour le rendu des épisodes")
 	.option("-f, --template-feed <file path>", "Spécifie le fichier .xsl qui servira de template pour l'affichage du flux RSS")
-	.option("-a,--template-author <file path>", "Spécifie le fichier .mustache qui servira de template pour le rendu des auteurs")
+	.option("-a, --template-author <file path>", "Spécifie le fichier .mustache qui servira de template pour le rendu des auteurs")
+	.option("-i, --template-author-index <file path>", "Spécifie le fichier .mustache qui servira de template pour le rendu de l'index des auteurs")
 	.arguments("[path]")
 	.action((main_path, cmd) => {
 		render({"override": cmd.override, "templatePodcast": cmd.templatePodcast, "templateEpisode": cmd.templateEpisode, "templateFeed": cmd.templateFeed, "path": main_path});
