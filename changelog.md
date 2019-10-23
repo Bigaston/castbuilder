@@ -1,4 +1,7 @@
 ## Changelog de Castbuilder
+### 1.1.1
+**Correction :**
+- Image pour les fichiers des auteurs
 
 ### 1.1.0
 #### Author Update

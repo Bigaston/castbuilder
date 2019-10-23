@@ -171,7 +171,7 @@ module.exports.render = (author, information, cmd) => {
         var render_object = {
             "podcast_title": information.title,
             "podcast_author": information.author,
-            "image_link": "img/" + au.image,
+            "image_link": "../img/" + au.image,
             "author_description": new showdown.Converter().makeHtml(au.description),
             "podcast_copyright": information.copyright,
             "self_link": information.link,
