@@ -103,6 +103,8 @@ module.exports.render = (author, information, cmd) => {
         "podcast_title": information.title,
         "podcast_author": information.author,
         "image_link": "img/" + information.image,
+        "self_link": information.link,
+        "podcast_copyright": information.copyright,
         "auteurs" : []
     }
 

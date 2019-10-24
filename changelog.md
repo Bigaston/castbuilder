@@ -1,4 +1,10 @@
 ## Changelog de Castbuilder
+### 1.1.3
+**Correction :**
+- Titre de la page des auteurs
+- Metadata de la page des auteurs
+- Correction problème avec les auteurs
+
 ### 1.1.2
 **Correction :**
 - Les chroniques apparaissaient en double dans les pages
@@ -44,6 +50,7 @@
 - Lien vers le flux RSS dans l'entête de index.html par défaut
 - Média tag pour Open Graph
 - Vérification du numéro de version à la fin de chaques commandes par raport au package de Github
+- Correction du copyright
 
 ### 1.0.14
 **Ajouts :**

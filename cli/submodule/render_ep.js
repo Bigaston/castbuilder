@@ -395,6 +395,8 @@ module.exports.render = (author, information, cmd) => {
         if (ep.privacy == undefined ||  ep.privacy == "all" || ep.privacy == "website" || ep.privacy == "unlisted" || !privacy_type.includes(ep.privacy)) {
             pub_date = new Date(parseInt(ep.pubDate))
 
+            auteurs = Object.keys(author)
+
             small_desc = ep.description;
 
             if (small_desc.length > 200) {
