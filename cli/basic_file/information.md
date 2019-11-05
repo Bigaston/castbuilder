@@ -1,3 +1,4 @@
+---
 title: Titre de votre podcast
 author: Votre nom
 email: machin@example.com
@@ -10,5 +11,5 @@ link:
 keyword:
 language:
 explicit:
-------
+---
 Ceci est une description avec **de la mise en page**.

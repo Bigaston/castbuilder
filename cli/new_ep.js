@@ -206,16 +206,20 @@ function getUrlInformation(guid, _callback) {
 
 
 function generationFichier(guid) {
-	chaine_fichier = "";
+	chaine_fichier = "---\n";
 
 	key = Object.keys(parametres);
 
 	key.forEach((cle) => {
-		chaine_fichier = chaine_fichier + cle + ": " + parametres[cle] + "\n"
+		if (typeof parametres[cle] == "string" && parametres[cle].includes(":")) {
+			chaine_fichier = chaine_fichier + cle + ": '" + parametres[cle] + "'\n"
+		} else {
+			chaine_fichier = chaine_fichier + cle + ": " + parametres[cle] + "\n"
+		}
 	})
 
 	getUrlInformation(guid, () => {
-		chaine_fichier = chaine_fichier + "------\n";
+		chaine_fichier = chaine_fichier + "---\n";
 		try {
 			fs.writeFileSync(path.join(main_dir, "episode", guid + ".md"), chaine_fichier)
 			console.log(good("Episode généré et disponible dans le dossier episode/ sous le nom " + guid + ".md !"))

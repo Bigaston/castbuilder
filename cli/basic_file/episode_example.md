@@ -1,3 +1,4 @@
+---
 title: Titre de votre épisode
 author: Auteur de l'épisode
 audio: Lien vers le fichier MP3
@@ -9,5 +10,5 @@ url:
 episode:
 season:
 episodeType:
-------
+---
 Ceci est un exemple de description

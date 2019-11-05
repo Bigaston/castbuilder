@@ -1,4 +1,9 @@
 ## Changelog de Castbuilder
+### 1.1.4
+**Ajouts :**
+- Plus besoin de mettre deux espaces ou de sauter une ligne pour revenir à la ligne
+- Utilisation de vrai YAML Front Matter pour les entêtes
+
 ### 1.1.3
 **Correction :**
 - Titre de la page des auteurs
@@ -15,7 +20,7 @@
 
 ### 1.1.0
 #### Author Update
-**AJouts :**
+**Ajouts :**
 - Ajout des auteurs
 - Chaque auteur a sa propre page dans le dossier exporté `au/` et qui indique ses épisodes
 - Ajout de la page `auteurs.html` qui présente les différents auteurs

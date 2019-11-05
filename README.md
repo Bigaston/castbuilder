@@ -39,8 +39,16 @@ castbuilder init
 
 Tous les fichiers par défauts seront installés à ce moment là. Petit explication des fichers. Déjà les fichiers sont des fichiers Markdown. Vous pouvez utiliser toute la sythaxe Markdown supportée par Showdown (le module que j'utilise pour transformer le Markdown en HTML). Toutes les infos sont [ici](https://github.com/showdownjs/showdown/wiki/Showdown's-Markdown-syntax).
 
-Alors ouvront le premier fichier, `information.md`. Dedans il y aura toutes les informations globales de votre flux, et la description de celui si. Voici à quoi correspondent les différents champs.
+Alors ouvront le premier fichier, `information.md`. Dedans il y aura toutes les informations globales de votre flux, et la description de celui si.
+Castbuilder utilise le principe des YAML Front Matter de Jekyll, n'hésitez pas à aller voir la documentation [ici](https://jekyllrb.com/docs/front-matter/).
+
+**Pensez à sécuriser vos titres si ils contiennent le caractère ":". Entourez simplement votre chaîne de '.**
+
+Pour éditer vos fichiers Markdown, je vous conseille énormément [Typora](https://typora.io/) qui est vraiment un super éditeur Markdown et prend en compte tous les besoins de Castbuilder.
+
+Voici à quoi correspondent les différents champs.
 ```Markdown
+---
 title: Titre de votre podcast
 author: Votre nom
 email: votre.email@example.com
@@ -53,7 +61,7 @@ link: Le lien où sera accessible ce flux (sans index.html/feed.xml)
 keyword: Les tags présents dans le flux
 language: Le langage du flux
 explicit: yes/no si explicite ou non
-------
+---
 Sous cette ligne, entrez la description de votre podcast!
 
 Vous pouvez faire de la mise en page en **gras par exemple** mais prenez en compte que tous les lecteurs ne le supporteront pas!
@@ -73,6 +81,7 @@ Maintenant qu'on a vu le fichier information.md on va voir un peu comment créer
 
 Comme la dernière fois, il y a quelques infos à completer!
 ```Markdown
+---
 title: Titre de votre épisode
 author: Auteur de l'épisode
 audio: Lien vers le fichier MP3
@@ -84,7 +93,7 @@ url: L'URL de l'article associé à votre épisode (dans le futur possibilitée 
 episode: Numéro de l'épisode (0 si il n'y en a pas) [OPTIONNEL]
 season: Numéro de la saison (0 si il n'y en a pas) [OPTIONNEL]
 episodeType: Type de l'épisode (full, trailer, bonus) [OPTIONNEL]
-------
+---
 Encore une fois une description *en Markdown*
 ```
 Si vous voulez savoir le timestamp d'une date, vous pouvez utiliser [cet outil](http://www.timestamp.fr/)! Il faudra juste multiplier par 1000 le timestamp donné puisque le Javascript utilise des timestamps en millisecondes.

@@ -3,6 +3,7 @@ const mustache = require("mustache");
 const chalk = require("chalk");
 const path = require("path");
 const fs = require("fs");
+var yamlFront = require('yaml-front-matter');
 const readline = require("readline")
 
 const error = chalk.bold.red;
@@ -12,65 +13,41 @@ const inf = chalk.blue.bold;
 
 const valid_author_tag = ["name", "image", "twitter", "instagram", "twitch", "youtube", "facebook", "website"]
 
+// Ajout du saut à la ligne avec un simple retour chariot
+showdown.setOption("simpleLineBreaks", true);
+
 module.exports.import = (_callback) => {
     var author = {}
 
     var files = fs.readdirSync(path.join(main_dir, "auteur"));
-	var nb_file_read = 0;
-
-    check = setInterval(checkReadAuthor, 500);
     
     console.log(inf("Import des auteurs..."))
 
     files.forEach((f, i) => {
-        let is_desc_ep = false;
-        let desc_ep;
         let this_author = {
             id: f.replace(".md", ""),
             ep: []
         }
 
-        let au = readline.createInterface({
-            input: fs.createReadStream(path.join(main_dir, "auteur", f))
-        })
-    
-        au.on("line", (line) => {
-            if (is_desc_ep == false) {
-                if (line.match(/------[-]*/) != undefined) {
-                    is_desc_ep = true;
-                } else {
-                    let cut = line.split(" ");
-                    
-                    if(valid_author_tag.includes(cut[0].replace(":", ""))) {
-                        this_author[cut[0].replace(":", "")] = cut.slice(1).join(" ");
-                    }
-                }
-            } else {
-                if (desc_ep == undefined) {
-                    desc_ep = line;
-                } else {
-                    desc_ep = desc_ep + "\n" + line;
-                }
+        let au = fs.readFileSync(path.join(main_dir, "auteur", f))
+        auteur = yamlFront.loadFront(au);
+
+        this_author.description = auteur["__content"]
+
+        au_key = Object.keys(auteur)
+        au_key.forEach((k) => {
+            if(valid_author_tag.includes(k)) {
+                this_author[k] = auteur[k];
             }
         })
     
-        au.on("close", (line) => {
-            this_author.description = desc_ep + "";
-            console.log(good(`Fichier "${f}" importé!`))
+        console.log(good(`Fichier "${f}" importé!`))
 
-            author[this_author.name.replace(".md", "").replace(" ", "_").toLowerCase()] = this_author;
-            
-            nb_file_read++;
-        })
+        author[this_author.name.replace(".md", "").replace(" ", "_").toLowerCase()] = this_author;
+
+        console.log(good("\nTous les fichiers auteurs ont été importés!"))
+        _callback(author);
     })
-
-    function checkReadAuthor() {
-        if (nb_file_read >= files.length) {
-            console.log(good("\nTous les fichiers auteurs ont été importés!"))
-            clearInterval(check);
-            _callback(author);
-        }
-    }
 }
 
 module.exports.render = (author, information, cmd) => {

@@ -5,6 +5,7 @@ const chalk = require("chalk");
 const path = require("path");
 const fs = require("fs");
 const readline = require("readline")
+var yamlFront = require('yaml-front-matter');
 const package = require("../../package.json");
 const fetch = require("node-fetch")
 
@@ -17,6 +18,9 @@ const valid_info_tag = ["title", "author", "email", "category", "subcategory", "
 const valid_ep_tag = ["title", "author", "audio", "pubDate", "duration", "image", "keyword", "url", "season", "episode", "episodeType", "privacy"];
 const privacy_type = ["all", "website", "feed", "unlisted"]
 
+// Ajout du saut à la ligne avec un simple retour chariot
+showdown.setOption("simpleLineBreaks", true);
+
 module.exports.import = (_callback) => {
     var information = {
         "items": []
@@ -24,89 +28,53 @@ module.exports.import = (_callback) => {
 
     console.log(inf("\nImport des informations et des épisodes..."))
 
-	let is_desc = false;
-	let desc;
+	inf_text = fs.readFileSync(path.join(main_dir, "information.md"))
+    info = yamlFront.loadFront(inf_text);
 
-	let info = readline.createInterface({
-		input: fs.createReadStream(path.join(main_dir, "information.md"))
-	})
+    information.description = info["__content"]
+    
+    inf_key = Object.keys(info);
+    inf_key.forEach((k) => {
+        if(valid_info_tag.includes(k)) {
+            information[k] = info[k];
+        }
+    })
 
-	info.on("line", (line) => {
-		if (is_desc == false) {
-			if (line.match(/------[-]*/) != undefined) {
-				is_desc = true;
-			} else {
-				let cut = line.split(" ");
-				
-				if(valid_info_tag.includes(cut[0].replace(":", ""))) {
-					information[cut[0].replace(":", "")] = cut.slice(1).join(" ");
-				}
-			}
-		} else {
-			if (desc == undefined) {
-				desc = line;
-			} else {
-				desc = desc + "\n" + line;
-			}
-		}
-	})
-
-	info.on("close", (line) => {
-		information.description = desc + "";
-		console.log(good(`Fichier "information.md" importé!`))
-		readEpisode();
-	})
+	console.log(good(`Fichier "information.md" importé!`))
+	readEpisode();
 
     function readEpisode() {
 		var files = fs.readdirSync(path.join(main_dir, "episode"));
-		
-		var nb_file_read = 0;
+        
+        var nb_file_read = 0;
 
 		check = setInterval(checkReadEpisode, 500);
 
 		files.forEach((f, i) => {
-			let is_desc_ep = false;
-			let desc_ep;
-
 			information.items[i] = {};
 
 			information.items[i].guid = f.replace(".md", "");
 		
-			let ep = readline.createInterface({
-				input: fs.createReadStream(path.join(main_dir, "episode", f))
-			})
-		
-			ep.on("line", (line) => {
-				if (is_desc_ep == false) {
-					if (line.match(/------[-]*/) != undefined) {
-						is_desc_ep = true;
-					} else {
-						let cut = line.split(" ");
-						
-						if(valid_ep_tag.includes(cut[0].replace(":", ""))) {
-							information.items[i][cut[0].replace(":", "")] = cut.slice(1).join(" ");
-						}
-					}
-				} else {
-					if (desc_ep == undefined) {
-						desc_ep = line;
-					} else {
-						desc_ep = desc_ep + "\n" + line;
-					}
-				}
-			})
-		
-			ep.on("close", (line) => {
-				information.items[i].description = desc_ep + "";
-				console.log(good(`Fichier "${f}" importé!`))
+            ep = fs.readFileSync(path.join(main_dir, "episode", f))
+            episode = yamlFront.loadFront(ep);
 
-				fetch(information.items[i].audio)
-					.then(res => {
-						information.items[i].size = res.headers.get("Content-Length")
-						nb_file_read++;
-					})
-			})
-		})
+            information.items[i].description = episode["__content"];
+
+            ep_key = Object.keys(episode);
+            ep_key.forEach((k) => {
+                if(valid_ep_tag.includes(k)) {
+                    information.items[i][k] = episode[k];
+                }
+            })
+		
+			console.log(good(`Fichier "${f}" importé!`))
+
+			fetch(information.items[i].audio)
+				.then(res => {
+					information.items[i].size = res.headers.get("Content-Length")
+					nb_file_read++;
+				})
+        })
 	
 		function checkReadEpisode() {
 			if (nb_file_read >= files.length) {
