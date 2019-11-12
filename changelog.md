@@ -1,4 +1,8 @@
 ## Changelog de Castbuilder
+### 1.1.5
+**Correction :**
+- Correction lors de plusieurs auteurs
+
 ### 1.1.4
 **Ajouts :**
 - Plus besoin de mettre deux espaces ou de sauter une ligne pour revenir à la ligne

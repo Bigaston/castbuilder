@@ -46,8 +46,10 @@ module.exports.import = (_callback) => {
         author[this_author.name.replace(".md", "").replace(" ", "_").toLowerCase()] = this_author;
 
         console.log(good("\nTous les fichiers auteurs ont été importés!"))
-        _callback(author);
     })
+
+    _callback(author);
+
 }
 
 module.exports.render = (author, information, cmd) => {
