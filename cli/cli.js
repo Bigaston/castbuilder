@@ -39,9 +39,10 @@ command
 	.command("new")
 	.description("Crée un nouvel épisode")
 	.option("-e, --easy", "Active le mode facile")
+	.option("-t, --template <file path>", "Spécifie un template.md pour avoir une description par défaut")
 	.arguments("[path]")
 	.action((main_path, cmd) => {
-		new_ep({"easy":cmd.easy, "path": main_path});
+		new_ep({"easy":cmd.easy, "path": main_path, "template": cmd.template});
 	})
 
 command.on('--help', function(){

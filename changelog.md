@@ -1,4 +1,12 @@
 ## Changelog de Castbuilder
+### 1.1.6
+**Ajouts :**
+- Banalisation des chaînes de caractères lors de l'utilisation des `new -e`
+- Possibilitée de spécifier un template en .md pour utiliser une description par défaut dans votre création d'épisode (utilisation de -t)
+
+**Correction :**
+- Erreur dans la date : 2H trop tôt par rapport à la bonne date de publication
+
 ### 1.1.5
 **Correction :**
 - Correction lors de plusieurs auteurs

@@ -10,6 +10,8 @@ const warning = chalk.yellow;
 const good = chalk.green;
 const info = chalk.bold.blue;
 
+var default_desc = "";
+
 main_dir = process.cwd();
 
 parametres = {
@@ -24,6 +26,22 @@ parametres = {
 }
 
 module.exports = (cmd) => {
+	if (cmd.template != undefined) {
+		template_path = path.join(main_dir, cmd.template)
+		if (path.extname(template_path) == ".md") {
+			if (fs.existsSync(template_path)) {
+				console.log(good(`Utilisation du template de description "${template_path}"`))
+				default_desc = fs.readFileSync(template_path, "utf8")
+			} else {
+				console.log(error(`Le fichier de template "${template_path}" n'existe pas! Arrêt de la création.`))
+				process.exit(-1);
+			}
+		} else {
+			console.log(error(`Le fichier de template "${template_path}" n'est pas un fichier Markdown! Arrêt de la création.`))
+			process.exit(-1);
+		}
+	}
+
 	if (cmd.path != undefined) {
 		main_dir = pathEvalute(cmd.path)
 		console.log(good(`Création de l'épisode dans "${path.join(main_dir, "episode")}"`))
@@ -212,14 +230,14 @@ function generationFichier(guid) {
 
 	key.forEach((cle) => {
 		if (typeof parametres[cle] == "string" && parametres[cle].includes(":")) {
-			chaine_fichier = chaine_fichier + cle + ": '" + parametres[cle] + "'\n"
+			chaine_fichier = chaine_fichier + cle + ": \"" + parametres[cle].replace(/"/g, "\\\"") + "\"\n"
 		} else {
 			chaine_fichier = chaine_fichier + cle + ": " + parametres[cle] + "\n"
 		}
 	})
 
 	getUrlInformation(guid, () => {
-		chaine_fichier = chaine_fichier + "---\n";
+		chaine_fichier = chaine_fichier + "---\n" + default_desc;
 		try {
 			fs.writeFileSync(path.join(main_dir, "episode", guid + ".md"), chaine_fichier)
 			console.log(good("Episode généré et disponible dans le dossier episode/ sous le nom " + guid + ".md !"))

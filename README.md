@@ -77,26 +77,14 @@ Et celui ci uniquement dans le flux RSS
 Liste des catégories iTunes : [castos.com/itunes-podcast-category-list](https://castos.com/itunes-podcast-category-list/)  
 Les langages supportés dans les flux RSS : [rssboard.org/rss-language-codes](http://www.rssboard.org/rss-language-codes)
 
-Maintenant qu'on a vu le fichier information.md on va voir un peu comment créer un épisode! Il suffit de créer un fichier .md dans le dossier `episode/`. Le nom du fichier sera le GUID de votre épisode et son adresse quand la génération d'article pour l'épisode sera en place.
+Maintenant qu'on a vu le fichier information.md on va voir un peu comment créer un épisode! 
 
-Comme la dernière fois, il y a quelques infos à completer!
-```Markdown
----
-title: Titre de votre épisode
-author: Auteur de l'épisode
-audio: Lien vers le fichier MP3
-pubDate: Date de publication (Timestamp Javascript!)
-duration: La durée de votre épisode (au format hh:mm:ss ou mm:ss)
-image: lien vers l'image, encore une fois présente dans le dossier img/
-keyword: les tags de votre épisode sur iTunes
-url: L'URL de l'article associé à votre épisode (dans le futur possibilitée qu'il soit généré automatiquement
-episode: Numéro de l'épisode (0 si il n'y en a pas) [OPTIONNEL]
-season: Numéro de la saison (0 si il n'y en a pas) [OPTIONNEL]
-episodeType: Type de l'épisode (full, trailer, bonus) [OPTIONNEL]
----
-Encore une fois une description *en Markdown*
+Il vous suffit d'utiliser la commande
 ```
-Si vous voulez savoir le timestamp d'une date, vous pouvez utiliser [cet outil](http://www.timestamp.fr/)! Il faudra juste multiplier par 1000 le timestamp donné puisque le Javascript utilise des timestamps en millisecondes.
+castbuilder new -e
+```
+
+Vous aurez quelques réponses à donner dans le terminal de commande et votre épisode sera créé automatiquement. (Vous pouvez aussi retirer l'argument -e pour créer vous même à la main l'épisode). Toutes les infos sur la commande dans [le Wiki](https://github.com/Bigaston/castbuilder/wiki/Les-Commandes#castbuilder-new). Et pour savoir l'utilité de tous les champs de votre fichier .md, pareil, les infos sont dans [le Wiki](https://github.com/Bigaston/castbuilder/wiki/Les-Episodes).
 
 Voilà! Il ne vous reste plus qu'à ajouter d'autes épisodes si vous le souhaitez en recomançant la manoeuvre!
 

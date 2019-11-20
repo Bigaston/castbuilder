@@ -300,7 +300,7 @@ module.exports.render = (author, information, cmd) => {
                 "ep_title": ep.title,
                 "ep_desc": new showdown.Converter().makeHtml(ep.description.replace("%website%", "").replace("%/website%", "").replace(/%feed%.*%\/feed%/gs, "")),
                 "duree_ep": ep.duration,
-                "date_sortie": pub_date.getDate() + "/" + (pub_date.getMonth()+1) + "/" + pub_date.getFullYear() + " " + addZero((pub_date.getHours()-2)) + ":" + addZero(pub_date.getMinutes()),
+                "date_sortie": pub_date.getDate() + "/" + (pub_date.getMonth()+1) + "/" + pub_date.getFullYear() + " " + addZero((pub_date.getHours())) + ":" + addZero(pub_date.getMinutes()),
                 "file_link": ep.audio,
                 "ep_author": ep_au,
                 "ep_guid": ep.guid
@@ -387,7 +387,7 @@ module.exports.render = (author, information, cmd) => {
                 "podcast_title": information.title,
                 "podcast_author": information.author,
                 "podcast_copyright": information.copyright,
-                "date_sortie": pub_date.getDate() + "/" + (pub_date.getMonth()+1) + "/" + pub_date.getFullYear() + " " + addZero((pub_date.getHours()-2)) + ":" + addZero(pub_date.getMinutes()),
+                "date_sortie": pub_date.getDate() + "/" + (pub_date.getMonth()+1) + "/" + pub_date.getFullYear() + " " + addZero((pub_date.getHours())) + ":" + addZero(pub_date.getMinutes()),
                 "small_desc": small_desc,
                 "self_link": information.link,
                 "image_absolute": information.link + "/img/" + ep.image,
