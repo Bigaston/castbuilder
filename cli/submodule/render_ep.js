@@ -218,7 +218,10 @@ module.exports.render = (author, information, cmd) => {
     console.log(inf("\nCréation du JSONFeed"))
     JSONFeed = {
         "version": "https://jsonfeed.org/version/1",
-        "_generator": "Castbuilder (v" + package.version + ")",
+        "_generator": {
+            "name": "Castbuilder (v" + package.version + ")",
+            "link": "https://github.com/Bigaston/castbuilder"
+        },
         "title": fObject.title,
         "home_page_url": information.link,
         "feed_url": information.link + "/feed.json",
@@ -250,7 +253,7 @@ module.exports.render = (author, information, cmd) => {
                 "url": item.audio,
                 "mime_type": "audio/mpeg",
                 "title": "Fichier Audio",
-                "size_in_bytes": item.size,
+                "size_in_bytes": parseInt(item.size),
                 "duration_in_seconds": s
             }]
         }
