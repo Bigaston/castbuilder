@@ -1,4 +1,8 @@
 ## Changelog de Castbuilder
+### 1.1.8
+**Ajouts :**
+- Ajout du lien entre l'index et le JSONFeed
+
 ### 1.1.7
 **Ajouts :**
 - Ajout du support du [JSONFeed](https://jsonfeed.org/)
