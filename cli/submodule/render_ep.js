@@ -118,8 +118,9 @@ module.exports.render = (author, information, cmd) => {
         return -(a.pubDate-b.pubDate);
     });
     
-    console.log(inf("Création du flux RSS"));
-    var feed = new rss({
+    console.log(inf("\nCréation du flux RSS"));
+
+    fObject = {
         title: information.title,
         description: new showdown.Converter().makeHtml(information.description.replace(/%website%.*%\/website%/gs, "").replace("%feed%", "").replace("%/feed%", "")),
         generator: "Castbuilder (v" + package.version + ")",
@@ -155,8 +156,11 @@ module.exports.render = (author, information, cmd) => {
                 }}
             ]},
             {"itunes:explicit" : information.explicit}
-        ]
-    })
+        ],
+        item: []
+    }
+
+    var feed = new rss(fObject)
 
     information.items.forEach((item) => {
         //url.resolve(information.link, "ep/" + item.guid + ".html")
@@ -174,7 +178,7 @@ module.exports.render = (author, information, cmd) => {
                     {'itunes:subtitle': item.description},
                     {'itunes:image': {
                     _attr: {
-                        href: information.link + "/img/" + information.image
+                        href: information.link + "/img/" + item.image
                     }
                     }},
                     {'itunes:duration': item.duration},
@@ -201,6 +205,7 @@ module.exports.render = (author, information, cmd) => {
                 ep_info.custom_elements.push({"itunes:episodeType" : item.episodeType})
             }
 
+            fObject.item.push(ep_info)
             feed.item(ep_info)
         }
     })
@@ -208,6 +213,52 @@ module.exports.render = (author, information, cmd) => {
     xml_sortie = feed.xml({indent:true}).replace(`<?xml version="1.0" encoding="UTF-8"?>`, `<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type="text/xsl" href="feed_style.xsl" ?>`)
     fs.writeFileSync(path.join(main_dir, "output", "feed.xml"), xml_sortie);
     console.log(good("FLux RSS généré"));
+
+    //Création du JSON Feed
+    console.log(inf("\nCréation du JSONFeed"))
+    JSONFeed = {
+        "version": "https://jsonfeed.org/version/1",
+        "_generator": "Castbuilder (v" + package.version + ")",
+        "title": fObject.title,
+        "home_page_url": information.link,
+        "feed_url": information.link + "/feed.json",
+        "description": fObject.description,
+        "icon": information.link + "/img/" + information.image,
+        "author": {
+            "name": information.author
+        },
+        items: []
+    }
+
+    information.items.forEach((item) => {
+        splited = item.duration.split(":")
+        s = splited[0] * 60 + parseInt(splited[1])
+
+        o = {
+            "id": item.guid,
+            "url": item.url,
+            "title": item.title,
+            "content_html": new showdown.Converter().makeHtml(item.description.replace(/%website%.*%\/website%/gs, "").replace("%feed%", "").replace("%/feed%", "")),
+            "summary": item.content_html,
+            "image": information.link + "/img/" + item.image,
+            "date_published": new Date(parseInt(item.pubDate)),
+            "author": {
+                "name": item.author
+            },
+            "tags": item.keyword.split(","),
+            "attachments" : [{
+                "url": item.audio,
+                "mime_type": "audio/mpeg",
+                "title": "Fichier Audio",
+                "size_in_bytes": item.size,
+                "duration_in_seconds": s
+            }]
+        }
+        JSONFeed.items.push(o)
+    })
+
+    fs.writeFileSync(path.join(main_dir, "output", "feed.json"), JSON.stringify(JSONFeed, null, 4));
+    console.log(good("JSONFeed généré!"))
 
     console.log(inf("\nCopie des images"));
     try {

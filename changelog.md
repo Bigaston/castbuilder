@@ -1,4 +1,11 @@
 ## Changelog de Castbuilder
+### 1.1.7
+**Ajouts :**
+- Ajout du support du [JSONFeed](https://jsonfeed.org/)
+
+**Correction :**
+- COrrection image de l'épisode
+
 ### 1.1.6
 **Ajouts :**
 - Banalisation des chaînes de caractères lors de l'utilisation des `new -e`
